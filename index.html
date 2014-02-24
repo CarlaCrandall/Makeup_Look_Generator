@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Makeup Look Generator</title>
+	
+	<script type="text/javascript">
+		//<![CDATA[
+		var ie7 = false;
+		var ie8 = false;
+		//]]>
+	</script>
+	
+	<!--[if IE 7]>
+		<script>ie7 = true;</script>
+	<![endif]-->
+	
+	<!--[if IE 8]>
+		<script>ie8 = true;</script>
+	<![endif]-->
+	
+	<script type="text/javascript" src="data.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body onload="init()">
+	<div id="header">
+		<h1>Makeup-O-Matic</h1>
+	</div>
+	<div class="container">
+		<div id="imgHolder"></div>
+		<div id="selHolder"></div>
+	</div>
+	<div class="container" id="bottom">
+		<div id="stepsHolder"></div>
+	</div>
+	<div id="footer">Copyright &copy; 2014 <a href="http://www.carlacrandall.com">Carla Crandall</a></div>
+</body>
+</html>

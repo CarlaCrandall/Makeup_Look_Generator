@@ -1,0 +1,183 @@
+/*---------------------------------------
+   Web & Icon Fonts
+-----------------------------------------*/
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Lato Light'), local('Lato-Light'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/kcf5uOXucLcbFOydGU24WALUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Lato Bold'), local('Lato-Bold'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+}
+
+
+/*---------------------------------------
+   General Styles
+-----------------------------------------*/
+*{
+	margin: 0;
+	padding: 0;
+	color: #333;
+	font-family: 'Lato', arial, helvetic, sans-serif;
+	font-size: 16px;
+	font-weight: 300;
+}
+.container{
+	width: 970px;
+	margin: 40px auto;
+	background-color: #fff;
+	clear: both;
+}
+.container:before, .container:after {
+    content: " "; 
+    display: table; 
+    clear: both;
+}
+
+
+/*---------------------------------------
+   Header Styles
+-----------------------------------------*/
+#header{
+	height: 100px;
+	background-color: #fff;
+	border-bottom: 5px solid #4ebcb2;
+}
+h1{
+	width: 970px;
+	margin: 0 auto;
+	padding-top: 10px;
+	font-size: 60px;
+	text-align: center;
+	color: #e5587e;
+}
+
+
+/*---------------------------------------
+   Eye Image Styles
+-----------------------------------------*/
+#imgHolder{
+	width: 465px;
+	height: 360px;
+	float: left;
+	position: relative;
+}
+#imgHolder img{
+	width: 450px;
+	height: 315px;
+	position: absolute;
+	top: 22px;
+}
+
+
+/*---------------------------------------
+   Select Styles
+-----------------------------------------*/
+#selHolder{
+	width: 500px;
+	height: 360px;
+	float: right;
+}
+.selContainer {
+	float: right;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+    line-height: 56px;
+}
+.selContainer span{
+	width: 115px;
+	display: block;
+	float: left;
+	color: #999;
+	font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+}
+.selContainer span:after{
+	content: '';
+	clear: both;
+}
+.selContainer select {
+	width: 300px;
+	margin-left: 15px;
+	padding: 15px 0px 15px 15px;
+	background: #fff;
+	color: #777;
+	border: 2px solid #ccc;
+	font-size: 16px;
+	outline:none; /* remove focus ring from Webkit */
+	-webkit-appearance:none; /* remove the strong OSX influence from Webkit */
+	-webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) { .selContainer select {padding-right:30px;} } /* for Webkit's CSS-only solution */
+.selContainer select:focus {
+	-webkit-box-shadow: 0 0 3px 1px #ccc;
+	-moz-box-shadow: 0 0 3px 1px #ccc;
+	box-shadow: 0 0 3px 1px #ccc;
+}
+.selContainer:after {
+	content: "▼";
+	position: absolute;
+	top: 10px; right: 2px; bottom: 10px;
+	font-size: 18px;
+	line-height: 30px;
+	padding: 2px 10px 0;
+	background: #fff;
+	color: #777;
+	border-left: 1px solid #ccc;
+	pointer-events:none;
+}
+.noPointerEvents:after {content: none;}
+
+
+/*---------------------------------------
+   Instructions Styles
+-----------------------------------------*/
+#bottom{min-height: 140px;}
+#stepsHolder{margin: 20px 0 40px;}
+#stepTitle{
+	padding-top: 30px;
+	border-top: 1px solid #ccc;
+}
+h2{
+	font-size: 24px;
+	font-weight: 700;
+}
+ol{
+	margin: 20px 0 20px 25px;
+	font-size: 16px;
+	line-height: 32px;
+}
+li{margin-bottom: 10px;}
+
+
+/*---------------------------------------
+   Footer Styles
+-----------------------------------------*/
+#footer{
+	padding: 20px 0;
+	text-align:center;
+	font-size:16px;
+	border-top: 1px solid #4ebcb2;
+}
+#footer a, #footer a:visited{
+	font-size: 16px;
+	color:#e5587e;
+}
+#footer a:hover{text-decoration: none;}
+
+
+
