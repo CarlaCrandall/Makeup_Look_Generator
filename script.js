@@ -98,6 +98,11 @@ function createSelect(which){
 					fadeOut($('stepTitle'), true);
 					fadeOut($('stepList'), true);
 				}
+
+				//remove download form, if it exists
+				if($('formHolder').children.length != 0){	
+					fadeOut($('downloadImg'), true);
+				}
 			} 
 		} 
 		
@@ -113,7 +118,6 @@ function createSelect(which){
 		loadImage(colorType, which.value); //display the image
 
 		//we're done building selects - output the user's choices
-		//setTimeout(outputChoices, 300);
 		outputChoices();
 	}
 
@@ -164,6 +168,9 @@ function clearImages(type){
 
 //output the user's choices
 function outputChoices(){
+	//create download form
+	downloadForm();
+
 	//clear out previous choices, if they exist
 	if(choiceArray[0] != undefined){ choiceArray.splice(0, choiceArray.length); }
 
@@ -180,6 +187,42 @@ function outputChoices(){
 		//create new list
 		setTimeout(createList, 850);		
 	}
+}
+
+//create form that allows user to download their generated look
+function downloadForm(){
+
+	//create the form element
+	var form = document.createElement('form');
+	form.setAttribute('id','downloadImg');
+	form.setAttribute('method','post');
+	form.setAttribute('action','image.php');
+
+	//loop through all images
+	imgArray = $('imgHolder').getElementsByTagName('img'); 
+	for(var i=0; i<imgArray.length; i++){
+		//create hidden input field - so we can pass img paths to the php script
+		var hiddenInput = document.createElement('input');
+		hiddenInput.setAttribute('type','hidden');
+		hiddenInput.setAttribute('value',imgArray[i].getAttribute('src'));
+		hiddenInput.setAttribute('name','layer[]');
+
+		//add hidden input to form
+		form.appendChild(hiddenInput);
+	}
+
+	//create button
+	var button = document.createElement('input');
+	button.setAttribute('class','button');
+	button.setAttribute('type','submit');
+	button.setAttribute('value','Download Your Look');
+	button.setAttribute('name','download');
+
+	//add button to form
+	form.appendChild(button);
+
+	//add form to page
+	$('formHolder').appendChild(form);
 }
 
 //create list of instructions
