@@ -19,17 +19,15 @@ var s,
 		that = this;
 
 		var types = Object.keys( questionData ),
-			i,
-			len,
 			newImg;
 
 		// Create image placeholders
-		for( i = 0, len = types.length; i < len; i++ ) {
+		for( type of types ) {
 
 			newImg = document.createElement( 'img' );
 			newImg.setAttribute( 'src', '' );
 			newImg.setAttribute( 'alt', '' );
-			newImg.setAttribute( 'id', types[i] );
+			newImg.setAttribute( 'id', type );
 			newImg.setAttribute( 'class', 'animated' );
 
 			s.imgHolder.appendChild( newImg );
@@ -53,22 +51,19 @@ var s,
 	createSelect: function( select ) {
 
 		var valArray = select.value.split( '|' ),
-			type = valArray[ 0 ],				// Question type
-			name = valArray[ 1 ] || '',			// Previous answer - to load image
-			imageType = valArray[ 2 ] || '',	// Previous type - to load image
-			data = s.questions[ type ], 		// Data for question/options
-			name,
+			type = valArray[ 0 ],				  	// Question type
+			name = valArray[ 1 ],					// Previous answer - to load image
+			imageType = valArray[ 2 ],				// Previous type - to load image
+			data = s.questions[ type ], 			// Data for question/options
 			nameCap,
 			selContainer,
 			labelSpan,
 			newSel,
-			newOpt,
-			i,
-			len;
+			newOpt;
 
 
 		// Load the image
-		if( imageType !== '' && name !== '' ) {
+		if( imageType && name ) {
 			this.updateImages( imageType, name );
 		}
 
@@ -83,7 +78,7 @@ var s,
 
 			// Wrap text in span for styling purposes
 			labelSpan = document.createElement( 'span' );
-			labelSpan.appendChild( document.createTextNode( data.optionLabel + ':' ) );
+			labelSpan.appendChild( document.createTextNode( `${ data.optionLabel }:` ) );
 			selContainer.appendChild( labelSpan );
 
 			// Create the select
@@ -94,17 +89,17 @@ var s,
 			newOpt = document.createElement( 'option' );
 			newOpt.setAttribute( 'disabled', 'disabled' );
 			newOpt.setAttribute( 'selected', 'selected' );
-			newOpt.appendChild( document.createTextNode( 'Choose your ' + data.optionLabel + '...' ) );
+			newOpt.appendChild( document.createTextNode( `Choose your ${ data.optionLabel }...` ) );
 			newSel.appendChild( newOpt );
 
 			// Create the rest of the options (question choices)
-			for( i = 0, len = data.options.length; i < len; i++ ) {
+			for( option of data.options ) {
 
 				// Capitalize first character
-				nameCap = data.options[ i ].charAt(0).toUpperCase() + data.options[ i ].slice(1);
+				nameCap = option.charAt(0).toUpperCase() + option.slice(1);
 
 				newOpt = document.createElement( 'option' );
-				newOpt.setAttribute( 'value',  data.nextType + '|' + data.options[ i ] + '|' + type );
+				newOpt.setAttribute( 'value',  `${ data.nextType }|${ option }|${ type }` );
 				newOpt.appendChild( document.createTextNode( nameCap ) );
 				newSel.appendChild( newOpt );
 			}
@@ -133,10 +128,6 @@ var s,
 	*/
 	removePrevChoices: function( select, type ) {
 
-		var children = s.selHolder.children,
-			i;
-
-
 		// User changed a previous option...
 		while( select.parentNode !== s.selHolder.lastChild ){
 
@@ -154,7 +145,7 @@ var s,
 	updateImages: function( type, name ) {
 
 		var img = document.getElementById( type ),
-			location = 'images/' + name + '.png';
+			location = `images/${ name }.png`;
 
 		// User changed a previous option
 		// Old images need to be cleared out
@@ -207,7 +198,7 @@ var s,
 		for( i = 1, len = s.images.length; i < len; i++ ) {
 
 			type = s.images[ i ].id;
-			step = s.questions[ type ].instruction[ 0 ] + ' ' + s.images[ i ].alt + ' ' +s.questions[ type ].instruction[ 1 ];
+			step = `${ s.questions[ type ].instruction[ 0 ] } ${ s.images[ i ].alt } ${ s.questions[ type ].instruction[ 1 ] }`;
 			
 			instructions.push( step );
 		}
@@ -223,9 +214,7 @@ var s,
 
 		var instructions = this.getInstructions(),
 			list = document.getElementById( 'stepList' ),
-			listItem,
-			i,
-			len;
+			listItem;
 
 		// Remove past instructions 
 		while( list.lastChild ) {
@@ -234,12 +223,12 @@ var s,
 		}
 
 		// Build new instructions
-		for( i = 0, len = instructions.length; i < len; i++ ) {
+		for( instruction of instructions ) {
 
 			listItem = document.createElement( 'li' );
-			listItem.appendChild( document.createTextNode( instructions[ i ] ) );
+			listItem.appendChild( document.createTextNode( instruction ) );
 			list.appendChild( listItem );
-		}
+		}		
 
 		s.stepsHolder.style.opacity = 1;
 	},
@@ -250,9 +239,7 @@ var s,
 	displayForm: function() {
 
 		var inputsHolder = document.getElementById( 'inputsHolder' ),
-			input,
-			i,
-			len;
+			input;
 
 		// Remove past inputs/choices 
 		while( inputsHolder.lastChild ) {
@@ -262,11 +249,11 @@ var s,
 
 		// Loop through all images and generate hidden inputs
 		// Inputs needed to pass image data to the PHP script
-		for( i = 0, len = s.images.length; i < len; i++ ) {
+		for( image of s.images ) {
 
 			input = document.createElement( 'input' );
 			input.setAttribute( 'type', 'hidden' );
-			input.setAttribute( 'value', s.images[ i ].getAttribute( 'src' ) );
+			input.setAttribute( 'value', image.getAttribute( 'src' ) );
 			input.setAttribute( 'name', 'layer[]' );
 
 			inputsHolder.appendChild( input );
