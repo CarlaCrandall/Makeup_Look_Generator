@@ -5,39 +5,58 @@
 	<title>Makeup Look Generator</title>
 
 	<link rel="stylesheet" type="text/css" href="style.css" />
-	
-	<script type="text/javascript">
-		//<![CDATA[
-		var ie7 = false;
-		var ie8 = false;
-		//]]>
-	</script>
-	
-	<!--[if IE 7]>
-		<script>ie7 = true;</script>
-	<![endif]-->
-	
-	<!--[if IE 8]>
-		<script>ie8 = true;</script>
-	<![endif]-->
-	
-	<script type="text/javascript" src="data.js"></script>
-	<script type="text/javascript" src="script.js"></script>
-
 </head>
-<body onload="init()">
+<body>
 	<div id="header">
 		<h1>Makeup-O-Matic</h1>
 	</div>
 	<div class="container">
-		<div id="imgHolder"></div>
-		<div id="selHolder"></div>
+		
+		<!-- Will hold all generated images -->
+		<div id="imgHolder">
+			<img src="images/eye.png" alt="eye">
+		</div>
+		
+		<!-- Will hold all generated selects -->
+		<div id="selHolder">
+			<select id="initSelect">
+				<option value="lid" selected="selected"></option>
+			</select>
+		</div>
+
 	</div>
+
 	<div class="container" id="bottom">
-		<div id="formHolder"></div>
-		<div id="stepsHolder"></div>
+
+		<div id="formHolder" class="animated">
+			<form method="post" action="image.php">
+				
+				<!-- Will hold all generated inputs -->
+				<div id="inputsHolder"></div>
+
+				<input 
+					class="button" 
+					type="submit" 
+					value="Download Your Look" 
+					name="download">
+
+			</form>
+		</div>
+
+		<div id="stepsHolder" class="animated">
+
+			<h2 id="stepTitle">To recreate your look...</h2>
+
+			<!-- Will hold all generated instructional steps -->
+			<ol id="stepList"></ol>
+
+		</div>
+
 	</div>
 
 	<div id="footer">Copyright &copy; 2014 <a href="http://www.carlacrandall.com">Carla Crandall</a></div>
+
+	<script type="text/javascript" src="data.js"></script>
+	<script type="text/javascript" src="script.js"></script>
 </body>
 </html>
