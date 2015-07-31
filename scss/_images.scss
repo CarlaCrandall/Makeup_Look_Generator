@@ -1,0 +1,46 @@
+/*---------------------------------------
+   Eye Image Styles
+-----------------------------------------*/
+#imgHolder { 
+	min-height: 360px;
+	position: relative; 
+}
+
+img {
+	width: 450px;
+	height: 315px;
+	position: absolute;
+	top: 22px;
+	opacity: 0;
+
+	&:first-child { opacity: 1; }
+}
+
+
+
+// Tablet
+@media( min-width: 768px ) and ( max-width: 991px ) {
+
+	img {
+		width: 358px;
+		height: 250px;
+	}
+}
+
+// Mobile
+@media( max-width: 767px ) {
+	
+	#imgHolder {
+		min-height: 161px;
+		margin: 10px 0;
+	}
+
+	img {
+		width: 230px;
+		height: 161px;
+		top: 0;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+}

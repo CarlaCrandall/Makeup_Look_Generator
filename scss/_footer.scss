@@ -1,0 +1,16 @@
+/*---------------------------------------
+   Footer Styles
+-----------------------------------------*/
+#footer {
+	padding: 20px 0;
+	text-align:center;
+	font-size:16px;
+	border-top: 1px solid $teal;
+}
+
+#footer a, #footer a:visited {
+	font-size: 16px;
+	color: $pink;
+
+	&:hover { text-decoration: none; }
+}

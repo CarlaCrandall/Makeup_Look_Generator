@@ -1,0 +1,67 @@
+/*---------------------------------------
+   General Styles
+-----------------------------------------*/
+* {
+	margin: 0;
+	padding: 0;
+	color: #333;
+	font-family: 'Lato', arial, helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: 300;
+}
+
+.container {
+	width: 970px;
+	margin: 40px auto;
+	background-color: #fff;
+	box-sizing: border-box;
+
+	&.bottom { margin-bottom: 0; }
+}
+
+.rightCol, .leftCol {
+	width: 50%;
+	float: right;
+	box-sizing: border-box;
+}
+
+.leftCol { float: left; }
+
+.clearfix { clear: both; }
+
+.clearfix:before, .clearfix:after {
+    content: " "; 
+    display: table; 
+    clear: both;
+}
+
+.animated {
+	-webkit-transition: opacity .25s ease-in-out;
+	transition: opacity .25s ease-in-out;
+}
+
+// Tablet
+@media( min-width: 768px ) and ( max-width: 991px ) {
+
+	.container {
+		width: 100%;
+		padding: 0 15px;
+	}
+
+	.rightCol { padding-left: 15px; }
+	.leftCol { padding-right: 15px; }
+}
+
+// Mobile
+@media( max-width: 767px ) {
+	
+	.container { 
+		width: 100%; 
+		margin: 20px auto;
+	}
+
+	.rightCol, .leftCol {
+		width: 100%;
+		clear: both;
+	}
+}

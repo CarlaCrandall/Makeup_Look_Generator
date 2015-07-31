@@ -1,0 +1,282 @@
+@charset "UTF-8";
+/*---------------------------------------
+   Web & Icon Fonts
+-----------------------------------------*/
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: local("Lato Light"), local("Lato-Light"), url(http://themes.googleusercontent.com/static/fonts/lato/v6/kcf5uOXucLcbFOydGU24WALUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(http://themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(http://themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+/*---------------------------------------
+   General Styles
+-----------------------------------------*/
+* {
+  margin: 0;
+  padding: 0;
+  color: #333;
+  font-family: 'Lato', arial, helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 300; }
+
+.container {
+  width: 970px;
+  margin: 40px auto;
+  background-color: #fff;
+  box-sizing: border-box; }
+  .container.bottom {
+    margin-bottom: 0; }
+
+.rightCol, .leftCol {
+  width: 50%;
+  float: right;
+  box-sizing: border-box; }
+
+.leftCol {
+  float: left; }
+
+.clearfix {
+  clear: both; }
+
+.clearfix:before, .clearfix:after {
+  content: " ";
+  display: table;
+  clear: both; }
+
+.animated {
+  -webkit-transition: opacity .25s ease-in-out;
+  transition: opacity .25s ease-in-out; }
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .container {
+    width: 100%;
+    padding: 0 15px; }
+
+  .rightCol {
+    padding-left: 15px; }
+
+  .leftCol {
+    padding-right: 15px; } }
+@media (max-width: 767px) {
+  .container {
+    width: 100%;
+    margin: 20px auto; }
+
+  .rightCol, .leftCol {
+    width: 100%;
+    clear: both; } }
+/*---------------------------------------
+   Header Styles
+-----------------------------------------*/
+#header {
+  height: 100px;
+  background-color: #fff;
+  border-bottom: 5px solid #4ebcb2; }
+
+h1 {
+  padding-top: 10px;
+  font-size: 60px;
+  text-align: center;
+  color: #e5587e; }
+
+@media (max-width: 767px) {
+  #header {
+    width: 100%;
+    height: 60px;
+    border-bottom-color: #4ebcb2; }
+
+  h1 {
+    font-size: 30px; } }
+/*---------------------------------------
+   Footer Styles
+-----------------------------------------*/
+#footer {
+  padding: 20px 0;
+  text-align: center;
+  font-size: 16px;
+  border-top: 1px solid #4ebcb2; }
+
+#footer a, #footer a:visited {
+  font-size: 16px;
+  color: #e5587e; }
+  #footer a:hover, #footer a:visited:hover {
+    text-decoration: none; }
+
+/*---------------------------------------
+   Eye Image Styles
+-----------------------------------------*/
+#imgHolder {
+  min-height: 360px;
+  position: relative; }
+
+img {
+  width: 450px;
+  height: 315px;
+  position: absolute;
+  top: 22px;
+  opacity: 0; }
+  img:first-child {
+    opacity: 1; }
+
+@media (min-width: 768px) and (max-width: 991px) {
+  img {
+    width: 358px;
+    height: 250px; } }
+@media (max-width: 767px) {
+  #imgHolder {
+    min-height: 161px;
+    margin: 10px 0; }
+
+  img {
+    width: 230px;
+    height: 161px;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto; } }
+/*---------------------------------------
+   Select Styles
+-----------------------------------------*/
+#selHolder {
+  min-height: 380px;
+  margin-top: 20px; }
+
+label {
+  height: 56px;
+  float: right;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+  line-height: 56px;
+  opacity: 0; }
+  label:after {
+    content: "▼";
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 18px;
+    line-height: 50px;
+    padding: 0 15px;
+    background: #fff;
+    color: #ccc;
+    border-radius: 4px;
+    pointer-events: none;
+    height: calc(100% - 4px); }
+  label span {
+    width: 120px;
+    display: block;
+    float: left;
+    color: #999;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+    text-transform: capitalize; }
+    label span:after {
+      content: '';
+      clear: both; }
+
+select {
+  width: 300px;
+  height: 100%;
+  margin-left: 15px;
+  padding: 15px 0px 15px 15px;
+  background: #fff;
+  color: #777;
+  border: 2px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  -webkit-appearance: none;
+  border-radius: 6px; }
+  select:focus {
+    box-shadow: 0 0 3px 1px #ccc; }
+
+#initSelect {
+  display: none; }
+
+@media (max-width: 991px) {
+  label {
+    width: 100%;
+    height: auto;
+    float: none;
+    line-height: 40px; }
+    label:after {
+      top: 42px;
+      height: 41px;
+      line-height: 40px; }
+    label span {
+      width: 100%; }
+
+  select {
+    width: 100%;
+    height: 45px;
+    margin-left: 0;
+    padding: 10px 0 10px 15px; } }
+@media (max-width: 767px) {
+  #selHolder {
+    min-height: 0;
+    padding: 0 15px; } }
+/*---------------------------------------
+   Instructions Styles
+-----------------------------------------*/
+#stepsHolder {
+  margin: 20px 0 40px;
+  opacity: 0; }
+
+#stepTitle {
+  padding-top: 30px;
+  border-top: 1px solid #ccc; }
+
+h2 {
+  font-size: 24px;
+  font-weight: 700; }
+
+ol {
+  margin: 20px 0 20px 15px;
+  font-size: 16px;
+  line-height: 32px; }
+  ol li {
+    margin-bottom: 10px;
+    padding-left: 10px; }
+
+@media (max-width: 767px) {
+  #stepsHolder {
+    padding: 0 15px; } }
+/*---------------------------------------
+   Download Form Styles
+-----------------------------------------*/
+#formHolder {
+  width: 300px;
+  float: right;
+  margin: 10px 0 0;
+  opacity: 0; }
+
+.button {
+  padding: 15px 10px;
+  background-color: #e5587e;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 400;
+  border-radius: 4px;
+  border-style: none;
+  cursor: pointer;
+  /* Hover Transition */
+  -webkit-transition: background-color .25s ease-in-out;
+  transition: background-color .25s ease-in-out; }
+  .button:hover {
+    background-color: #4ebcb2; }
+
+@media (max-width: 991px) {
+  #formHolder {
+    float: none; } }
+@media (max-width: 767px) {
+  .button {
+    margin-left: 15px; } }

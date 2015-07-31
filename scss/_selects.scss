@@ -1,0 +1,101 @@
+/*---------------------------------------
+   Select Styles
+-----------------------------------------*/
+#selHolder {
+	min-height: 380px;
+	margin-top: 20px; 
+}
+
+label {
+	height: 56px;
+	float: right;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+    line-height: 56px;
+    opacity: 0;
+
+    &:after {
+    	content: "▼";
+    	position: absolute;
+    	top: 2px;
+    	right: 2px;
+    	font-size: 18px;
+    	line-height: 50px;
+    	padding: 0 15px;
+    	background: #fff;
+    	color: #ccc;
+    	border-radius: 4px;
+    	pointer-events: none;
+    	height: calc(100% - 4px);
+    }
+
+	span {
+		width: 120px;
+		display: block;
+		float: left;
+		color: #999;
+		font-size: 16px;
+	    font-weight: 700;
+	    text-align: left;
+	    text-transform: capitalize;
+
+	    &:after {
+	    	content: '';
+	    	clear: both;
+	    }
+	}
+}
+
+select {
+	width: 300px;
+	height: 100%;
+	margin-left: 15px;
+	padding: 15px 0px 15px 15px;
+	background: #fff;
+	color: #777;
+	border: 2px solid #ccc;
+	font-size: 16px;
+	outline: none;
+	-webkit-appearance: none; // Remove the strong OSX influence from Webkit
+    border-radius: 6px;
+
+	&:focus { box-shadow: 0 0 3px 1px #ccc; }
+}
+
+#initSelect { display: none; } // Hide helper element
+
+// Mobile & Tablet
+@media ( max-width: 991px ) {
+
+	label {
+		width: 100%;
+		height: auto;
+		float: none;
+		line-height: 40px;
+
+		&:after { 
+			top: 42px;
+			height: 41px;
+			line-height: 40px; 
+		}
+	
+		span { width: 100%; }
+	}
+
+	select {
+		width: 100%;
+		height: 45px;
+		margin-left: 0;
+		padding: 10px 0 10px 15px;
+	}
+}
+
+// Mobile
+@media( max-width: 767px ) {
+	
+	#selHolder { 
+		min-height: 0;
+		padding: 0 15px; 
+	}	
+}

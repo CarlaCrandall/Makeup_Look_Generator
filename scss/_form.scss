@@ -1,0 +1,38 @@
+/*---------------------------------------
+   Download Form Styles
+-----------------------------------------*/
+#formHolder { 
+	width: 300px;
+	float: right;
+	margin: 10px 0 0; 
+	opacity: 0;
+}
+
+.button {
+	padding: 15px 10px;
+	background-color: $pink;
+	color: #fff;
+	font-size: 18px;
+	font-weight: 400;
+	border-radius: 4px;
+	border-style: none;
+	cursor: pointer;
+	
+	/* Hover Transition */
+	-webkit-transition: background-color .25s ease-in-out;
+	transition: background-color .25s ease-in-out;
+
+	&:hover { background-color: $teal; }
+}
+
+// Mobile & Tablet
+@media( max-width: 991px ) {
+
+	#formHolder { float: none; }
+}
+
+// Mobile
+@media( max-width: 767px ) {
+	
+	.button { margin-left: 15px; }
+}
