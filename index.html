@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<title>Makeup Look Generator</title>
 
 	<link rel="stylesheet" type="text/css" href="style.css" />
@@ -10,38 +11,46 @@
 	<div id="header">
 		<h1>Makeup-O-Matic</h1>
 	</div>
-	<div class="container">
-		
-		<!-- Will hold all generated images -->
-		<div id="imgHolder">
-			<img src="images/eye.png" alt="eye">
-		</div>
-		
-		<!-- Will hold all generated selects -->
-		<div id="selHolder">
-			<select id="initSelect">
-				<option value="lid" selected="selected"></option>
-			</select>
-		</div>
+	<div class="container clearfix">
 
+		<div class="leftCol">
+			
+			<!-- Will hold all generated images -->
+			<div id="imgHolder">
+				<img src="images/eye.png" alt="eye">
+			</div>
+
+		</div>
+		
+		<div class="rightCol">
+			
+			<!-- Will hold all generated selects -->
+			<div id="selHolder" class="clearfix">
+				<select id="initSelect">
+					<option value="lid" selected="selected"></option>
+				</select>
+			</div>
+			
+			<div id="formHolder" class="animated clearfix">
+				<form method="post" action="image.php">
+					
+					<!-- Will hold all generated inputs -->
+					<div id="inputsHolder"></div>
+
+					<input 
+						class="button" 
+						type="submit" 
+						value="Download Your Look" 
+						name="download">
+
+				</form>
+			</div>
+
+		</div>
+		
 	</div>
 
-	<div class="container" id="bottom">
-
-		<div id="formHolder" class="animated">
-			<form method="post" action="image.php">
-				
-				<!-- Will hold all generated inputs -->
-				<div id="inputsHolder"></div>
-
-				<input 
-					class="button" 
-					type="submit" 
-					value="Download Your Look" 
-					name="download">
-
-			</form>
-		</div>
+	<div class="container bottom clearfix">
 
 		<div id="stepsHolder" class="animated">
 
