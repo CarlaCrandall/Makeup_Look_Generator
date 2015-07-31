@@ -1,6 +1,25 @@
-$teal: #4ebcb2;
-$pink: #e5587e; 
+/*---------------------------------------
+   Variables
+-----------------------------------------*/
+$dark-gray 	: #999;
+$light-gray : #CCC;
+$text		: #333;
+$teal		: #4ebcb2;
+$pink		: #e5587e; 
 
+
+/*---------------------------------------
+   Mixins
+-----------------------------------------*/
+@mixin transition( $property ) {
+	-webkit-transition: $property .25s ease-in-out;
+	transition: $property .25s ease-in-out;
+}
+
+
+/*---------------------------------------
+   Imports
+-----------------------------------------*/
 @import '_fonts.scss';
 @import '_general.scss';
 @import '_header.scss';

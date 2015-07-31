@@ -1,5 +1,14 @@
 @charset "UTF-8";
 /*---------------------------------------
+   Variables
+-----------------------------------------*/
+/*---------------------------------------
+   Mixins
+-----------------------------------------*/
+/*---------------------------------------
+   Imports
+-----------------------------------------*/
+/*---------------------------------------
    Web & Icon Fonts
 -----------------------------------------*/
 @font-face {
@@ -53,8 +62,8 @@
   clear: both; }
 
 .animated {
-  -webkit-transition: opacity .25s ease-in-out;
-  transition: opacity .25s ease-in-out; }
+  -webkit-transition: opacity 0.25s ease-in-out;
+  transition: opacity 0.25s ease-in-out; }
 
 @media (min-width: 768px) and (max-width: 991px) {
   .container {
@@ -158,6 +167,8 @@ label {
   margin-bottom: 20px;
   line-height: 56px;
   opacity: 0; }
+  label:hover:after {
+    color: #999; }
   label:after {
     content: "▼";
     position: absolute;
@@ -167,10 +178,12 @@ label {
     line-height: 50px;
     padding: 0 15px;
     background: #fff;
-    color: #ccc;
+    color: #CCC;
     border-radius: 4px;
     pointer-events: none;
-    height: calc(100% - 4px); }
+    height: calc(100% - 4px);
+    -webkit-transition: color 0.25s ease-in-out;
+    transition: color 0.25s ease-in-out; }
   label span {
     width: 120px;
     display: block;
@@ -190,14 +203,20 @@ select {
   margin-left: 15px;
   padding: 15px 0px 15px 15px;
   background: #fff;
-  color: #777;
-  border: 2px solid #ccc;
+  color: #999;
+  border: 2px solid #CCC;
   font-size: 16px;
   outline: none;
   -webkit-appearance: none;
-  border-radius: 6px; }
-  select:focus {
-    box-shadow: 0 0 3px 1px #ccc; }
+  border-radius: 6px;
+  -webkit-transition: border-color 0.25s ease-in-out;
+  transition: border-color 0.25s ease-in-out;
+  -webkit-transition: color 0.25s ease-in-out;
+  transition: color 0.25s ease-in-out; }
+  select:focus, select:hover {
+    cursor: pointer;
+    border-color: #4ebcb2;
+    color: #333; }
 
 #initSelect {
   display: none; }
@@ -223,6 +242,7 @@ select {
 @media (max-width: 767px) {
   #selHolder {
     min-height: 0;
+    margin-top: 10px;
     padding: 0 15px; } }
 /*---------------------------------------
    Instructions Styles
@@ -268,9 +288,8 @@ ol {
   border-radius: 4px;
   border-style: none;
   cursor: pointer;
-  /* Hover Transition */
-  -webkit-transition: background-color .25s ease-in-out;
-  transition: background-color .25s ease-in-out; }
+  -webkit-transition: background-color 0.25s ease-in-out;
+  transition: background-color 0.25s ease-in-out; }
   .button:hover {
     background-color: #4ebcb2; }
 

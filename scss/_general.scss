@@ -4,7 +4,7 @@
 * {
 	margin: 0;
 	padding: 0;
-	color: #333;
+	color: $text;
 	font-family: 'Lato', arial, helvetica, sans-serif;
 	font-size: 16px;
 	font-weight: 300;
@@ -36,8 +36,7 @@
 }
 
 .animated {
-	-webkit-transition: opacity .25s ease-in-out;
-	transition: opacity .25s ease-in-out;
+	@include transition( opacity ); // Fade-In / Out  
 }
 
 // Tablet
