@@ -4,6 +4,8 @@ var s,
 
 	settings: {
 		questions   : questionData,
+		isMobile	: false,
+		currentSel  : 0,
 		images      : null,
 		imgHolder   : document.getElementById( 'imgHolder' ),
 		selHolder   : document.getElementById( 'selHolder' ),
@@ -18,8 +20,10 @@ var s,
 		s = this.settings;
 		that = this;
 
-		var types = Object.keys( questionData ),
+		var types = Object.keys( s.questions ),
 			newImg;
+
+		this.checkForMobile();
 
 		// Create image placeholders
 		for( type of types ) {
@@ -28,19 +32,56 @@ var s,
 			newImg.setAttribute( 'src', '' );
 			newImg.setAttribute( 'alt', '' );
 			newImg.setAttribute( 'id', type );
-			newImg.setAttribute( 'class', 'animated' );
+			newImg.setAttribute( 'class', 'fade' );
 
 			s.imgHolder.appendChild( newImg );
 		}
 
 		// Create the first select / question
 		this.createSelect( document.getElementById( 'initSelect' ) );
+
+		this.bindEvents();
 	},
 
 	/**
-	* Handles select change events
+	* Bind necessary event handlers
 	*/
-	changeEventHandler: function() {
+	bindEvents: function() {
+
+		var prevBtn = document.getElementById( 'prev' ),
+			nextBtn = document.getElementById( 'next' );
+
+		// Bind window resize event
+		window.addEventListener( 'resize', this.checkForMobile, true );
+
+		// Click event for previous button
+		prevBtn.addEventListener( 'click', function() {
+
+			that.slideInOption( false );
+		}, false );
+
+		// Click event for next button
+		nextBtn.addEventListener( 'click', function() {
+
+			that.slideInOption( true );
+		}, false );
+	},
+
+	/**
+	* Sets settings.isMobile based on window size, so we
+	* can create a different experience for mobile devices /
+	* small screen sizes
+	*/
+	checkForMobile: function() {
+
+		s.isMobile = ( Number( window.innerWidth ) < 768 ) ? true : false;
+	},
+
+	/**
+	* Handles select menu change events when user selects
+	* or updates a choice
+	*/
+	optionUpdated: function() {
 
 		that.createSelect( this );
 	},
@@ -70,11 +111,21 @@ var s,
 		// Still more questions to load...
 		if( data ) {
 
-			this.removePrevChoices( select, type );
+			this.removePrevChoices( select );
 
 			// Create label
 			selContainer = document.createElement( 'label' );
-			selContainer.setAttribute( 'class', 'animated' );
+
+			// Tablet & Desktop selects should fade in
+			if( !s.isMobile ) {
+
+				selContainer.setAttribute( 'class', 'fade' );
+			}
+			// Mobile selects should slide in
+			else if( imageType ) {
+
+				selContainer.style.transform = 'translateX( calc( 100% + 15px) )';
+			}
 
 			// Wrap text in span for styling purposes
 			labelSpan = document.createElement( 'span' );
@@ -83,7 +134,7 @@ var s,
 
 			// Create the select
 			newSel = document.createElement( 'select' );
-			newSel.addEventListener('change', this.changeEventHandler, false);
+			newSel.addEventListener('change', this.optionUpdated, false);
 
 			// Create the first option (question text)
 			newOpt = document.createElement( 'option' );
@@ -107,10 +158,10 @@ var s,
 			// Add select to the container
 			selContainer.appendChild( newSel );
 			s.selHolder.appendChild( selContainer );
-			
+
 			// Fade in select - Timeout needed for CSS animation
-			setTimeout( function() { 
-				selContainer.style.opacity = 1; 
+			setTimeout( function() {
+				selContainer.style.opacity = 1;
 			}, 10 );
 
 		}
@@ -126,7 +177,7 @@ var s,
 	* Remove unnecessary selects when the user edits
 	* a previously selected option
 	*/
-	removePrevChoices: function( select, type ) {
+	removePrevChoices: function( select ) {
 
 		// User changed a previous option...
 		while( select.parentNode !== s.selHolder.lastChild ){
@@ -137,6 +188,46 @@ var s,
 		// Hide steps holder and download form
 		s.stepsHolder.style.opacity = 0;
 		s.formHolder.style.opacity = 0;
+	},
+
+	/**
+	* For mobile devices, slide in the current select
+	* and slide out the next select
+	*/
+	slideInOption: function( next ) {
+
+		var translate = '',
+			increment,
+			select;
+
+		// TODO: Disable prev button for first select
+		// TODO: Disable next button if there is no next select
+
+		// Next button is only needed for mobile devices
+		if( s.isMobile ) {
+
+			if( next ) {
+				translate = 'translateX( calc( -100% - 15px ) )';
+				increment = 1;
+			}
+			else {
+				translate = 'translateX( calc( 100% + 15px ) )';
+				increment = -1;
+			}
+
+			// Slide out current select
+			select = s.selHolder.children[ s.currentSel ];
+			select.style.transform = translate;
+
+			s.currentSel = s.currentSel + increment;
+
+			// Slide in next select
+			select = s.selHolder.children[ s.currentSel ];
+			select.style.transform = 'translateX( 0 )';
+		}
+
+		// Do nothing if not mobile
+		return false;
 	},
 
 	/**
@@ -199,7 +290,7 @@ var s,
 
 			type = s.images[ i ].id;
 			step = `${ s.questions[ type ].instruction[ 0 ] } ${ s.images[ i ].alt } ${ s.questions[ type ].instruction[ 1 ] }`;
-			
+
 			instructions.push( step );
 		}
 
@@ -216,7 +307,7 @@ var s,
 			list = document.getElementById( 'stepList' ),
 			listItem;
 
-		// Remove past instructions 
+		// Remove past instructions
 		while( list.lastChild ) {
 
 			list.removeChild( list.lastChild );
@@ -228,7 +319,7 @@ var s,
 			listItem = document.createElement( 'li' );
 			listItem.appendChild( document.createTextNode( instruction ) );
 			list.appendChild( listItem );
-		}		
+		}
 
 		s.stepsHolder.style.opacity = 1;
 	},
@@ -241,7 +332,7 @@ var s,
 		var inputsHolder = document.getElementById( 'inputsHolder' ),
 			input;
 
-		// Remove past inputs/choices 
+		// Remove past inputs/choices
 		while( inputsHolder.lastChild ) {
 
 			inputsHolder.removeChild( inputsHolder.lastChild );
@@ -259,6 +350,7 @@ var s,
 			inputsHolder.appendChild( input );
 		}
 
+		// Show the form
 		s.formHolder.style.opacity = 1;
 	}
 

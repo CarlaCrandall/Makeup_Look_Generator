@@ -6,6 +6,8 @@
 	margin-top: 20px; 
 }
 
+#selNav { display: none; }
+
 label {
 	height: 56px;
 	float: right;
@@ -64,8 +66,9 @@ select {
 	-webkit-appearance: none; // Remove the strong OSX influence from Webkit
     border-radius: 6px;
 
-    @include transition( border-color ); // Hover Transition
-    @include transition( color ); // Hover Transition
+	// Hover Transition
+	-webkit-transition: border-color .25s ease-in-out, color .25s ease-in-out;
+	transition: border-color .25s ease-in-out, color .25s ease-in-out;
 
 	&:focus, &:hover { 
 		cursor: pointer;
@@ -80,7 +83,7 @@ select {
 @media ( max-width: 991px ) {
 
 	label {
-		width: 100%;
+		width: calc( 100% - 30px );
 		height: auto;
 		float: none;
 		line-height: 40px;
@@ -106,8 +109,25 @@ select {
 @media( max-width: 767px ) {
 	
 	#selHolder { 
-		min-height: 0;
+		min-height: 110px;
 		margin-top: 10px;
 		padding: 0 15px; 
-	}	
+	}
+
+	#selNav { 
+		display: block;
+		padding: 0 15px;
+		text-align: right;
+
+		.button { 
+			margin-left: 10px;
+			padding: 10px;
+		}
+	}
+
+	label { 
+		position: absolute;
+
+		@include transition( transform ); // Slide Transition 
+	}
 }

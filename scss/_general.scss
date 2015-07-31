@@ -35,7 +35,7 @@
     clear: both;
 }
 
-.animated {
+.fade {
 	@include transition( opacity ); // Fade-In / Out  
 }
 
