@@ -1,0 +1,19 @@
+{
+	"curly"     : true,
+    "eqeqeq"    : true,
+    "eqnull"    : true,
+    "expr"      : true,
+    "latedef"   : true,
+    "onevar"    : true,
+    "noarg"     : true,
+    "trailing"  : true,
+    "undef"     : true,
+    "unused"    : true,
+    "browser"   : true,
+    "devel"     : true,
+    "quotmark"  : true,
+    "noempty"   : false,
+    "forin"     : true,
+    "esnext"    : true,
+    "globals"   : { "questionData" : true }
+}
