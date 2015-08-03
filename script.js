@@ -10,7 +10,9 @@ var s,
 		imgHolder   : document.getElementById( 'imgHolder' ),
 		selHolder   : document.getElementById( 'selHolder' ),
 		stepsHolder : document.getElementById( 'stepsHolder' ),
-		formHolder  : document.getElementById( 'formHolder' )
+		formHolder  : document.getElementById( 'formHolder' ),
+		nextBtn		: document.getElementById( 'next' ),
+		prevBtn		: document.getElementById( 'prev' )
 	},
 
 	/**
@@ -26,7 +28,7 @@ var s,
 		this.checkForMobile();
 
 		// Create image placeholders
-		for( type of types ) {
+		for( var type of types ) {
 
 			newImg = document.createElement( 'img' );
 			newImg.setAttribute( 'src', '' );
@@ -38,7 +40,7 @@ var s,
 		}
 
 		// Create the first select / question
-		this.createSelect( document.getElementById( 'initSelect' ) );
+		this.displayQuestion( document.getElementById( 'initSelect' ) );
 
 		this.bindEvents();
 	},
@@ -48,20 +50,17 @@ var s,
 	*/
 	bindEvents: function() {
 
-		var prevBtn = document.getElementById( 'prev' ),
-			nextBtn = document.getElementById( 'next' );
-
 		// Bind window resize event
 		window.addEventListener( 'resize', this.checkForMobile, true );
 
 		// Click event for previous button
-		prevBtn.addEventListener( 'click', function() {
+		s.prevBtn.addEventListener( 'click', function() {
 
 			that.slideInOption( false );
 		}, false );
 
 		// Click event for next button
-		nextBtn.addEventListener( 'click', function() {
+		s.nextBtn.addEventListener( 'click', function() {
 
 			that.slideInOption( true );
 		}, false );
@@ -83,24 +82,19 @@ var s,
 	*/
 	optionUpdated: function() {
 
-		that.createSelect( this );
+		that.displayQuestion( this );
 	},
 
 	/**
-	* Creates a new select / question
+	* Display the next question
 	*/
-	createSelect: function( select ) {
+	displayQuestion: function( select ) {
 
 		var valArray = select.value.split( '|' ),
 			type = valArray[ 0 ],				  	// Question type
 			name = valArray[ 1 ],					// Previous answer - to load image
 			imageType = valArray[ 2 ],				// Previous type - to load image
-			data = s.questions[ type ], 			// Data for question/options
-			nameCap,
-			selContainer,
-			labelSpan,
-			newSel,
-			newOpt;
+			data = s.questions[ type ]; 			// Data for question/options
 
 
 		// Load the image
@@ -112,58 +106,7 @@ var s,
 		if( data ) {
 
 			this.removePrevChoices( select );
-
-			// Create label
-			selContainer = document.createElement( 'label' );
-
-			// Tablet & Desktop selects should fade in
-			if( !s.isMobile ) {
-
-				selContainer.setAttribute( 'class', 'fade' );
-			}
-			// Mobile selects should slide in
-			else if( imageType ) {
-
-				selContainer.style.transform = 'translateX( calc( 100% + 15px) )';
-			}
-
-			// Wrap text in span for styling purposes
-			labelSpan = document.createElement( 'span' );
-			labelSpan.appendChild( document.createTextNode( `${ data.optionLabel }:` ) );
-			selContainer.appendChild( labelSpan );
-
-			// Create the select
-			newSel = document.createElement( 'select' );
-			newSel.addEventListener('change', this.optionUpdated, false);
-
-			// Create the first option (question text)
-			newOpt = document.createElement( 'option' );
-			newOpt.setAttribute( 'disabled', 'disabled' );
-			newOpt.setAttribute( 'selected', 'selected' );
-			newOpt.appendChild( document.createTextNode( `Choose your ${ data.optionLabel }...` ) );
-			newSel.appendChild( newOpt );
-
-			// Create the rest of the options (question choices)
-			for( option of data.options ) {
-
-				// Capitalize first character
-				nameCap = option.charAt(0).toUpperCase() + option.slice(1);
-
-				newOpt = document.createElement( 'option' );
-				newOpt.setAttribute( 'value',  `${ data.nextType }|${ option }|${ type }` );
-				newOpt.appendChild( document.createTextNode( nameCap ) );
-				newSel.appendChild( newOpt );
-			}
-
-			// Add select to the container
-			selContainer.appendChild( newSel );
-			s.selHolder.appendChild( selContainer );
-
-			// Fade in select - Timeout needed for CSS animation
-			setTimeout( function() {
-				selContainer.style.opacity = 1;
-			}, 10 );
-
+			this.createSelect( data, imageType, type );
 		}
 		// Reached end of the questions, show instructions & download form
 		else {
@@ -171,6 +114,73 @@ var s,
 			this.displayInstructions();
 			this.displayForm();
 		}
+	},
+
+	/**
+	* Creates the markup needed for each question
+	*/
+	createSelect: function( data, imageType, type ) {
+
+		var selContainer,
+			labelSpan,
+			newSel,
+			newOpt,
+			nameCap;
+
+		// Create label
+		selContainer = document.createElement( 'label' );
+
+		// Tablet & Desktop selects should fade in
+		if( !s.isMobile ) {
+
+			selContainer.setAttribute( 'class', 'fade' );
+		}
+		// Mobile
+		else if( imageType ) {
+
+			// Mobile selects should slide in
+			selContainer.style.transform = 'translateX( calc( 100% + 15px) )';
+			
+
+			this.updateBtnStatus( s.nextBtn, false );
+		}
+
+		// Wrap text in span for styling purposes
+		labelSpan = document.createElement( 'span' );
+		labelSpan.appendChild( document.createTextNode( `${ data.optionLabel }:` ) );
+		selContainer.appendChild( labelSpan );
+
+		// Create the select
+		newSel = document.createElement( 'select' );
+		newSel.addEventListener('change', this.optionUpdated, false);
+
+		// Create the first option (question text)
+		newOpt = document.createElement( 'option' );
+		newOpt.setAttribute( 'disabled', 'disabled' );
+		newOpt.setAttribute( 'selected', 'selected' );
+		newOpt.appendChild( document.createTextNode( `Choose your ${ data.optionLabel }...` ) );
+		newSel.appendChild( newOpt );
+
+		// Create the rest of the options (question choices)
+		for( var option of data.options ) {
+
+			// Capitalize first character
+			nameCap = option.charAt(0).toUpperCase() + option.slice(1);
+
+			newOpt = document.createElement( 'option' );
+			newOpt.setAttribute( 'value',  `${ data.nextType }|${ option }|${ type }` );
+			newOpt.appendChild( document.createTextNode( nameCap ) );
+			newSel.appendChild( newOpt );
+		}
+
+		// Add select to the container
+		selContainer.appendChild( newSel );
+		s.selHolder.appendChild( selContainer );
+
+		// Fade in select - Timeout needed for CSS animation
+		setTimeout( function() {
+			selContainer.style.opacity = 1;
+		}, 10 );
 	},
 
 	/**
@@ -191,6 +201,20 @@ var s,
 	},
 
 	/**
+	* Handles enabling and disabling the next/prev buttons
+	* for mobile devices / small screen sizes
+	*/
+	updateBtnStatus: function( button, disable ) {
+
+		// Next/Prev buttons are only needed for mobile devices
+		if( s.isMobile ) {
+
+			button.disabled = disable;
+		}
+
+	},
+
+	/**
 	* For mobile devices, slide in the current select
 	* and slide out the next select
 	*/
@@ -200,19 +224,36 @@ var s,
 			increment,
 			select;
 
-		// TODO: Disable prev button for first select
-		// TODO: Disable next button if there is no next select
-
-		// Next button is only needed for mobile devices
+		// Next/Prev buttons are only needed for mobile devices
 		if( s.isMobile ) {
 
+			// User clicked next
 			if( next ) {
 				translate = 'translateX( calc( -100% - 15px ) )';
 				increment = 1;
+
+				// Enable the prev button
+				this.updateBtnStatus( s.prevBtn, false );
+
+				// Disable the next button when there is no next select
+				if( s.currentSel + increment === s.selHolder.children.length - 1 ) {
+
+					this.updateBtnStatus( s.nextBtn, true );
+				}
 			}
+			// User clicked prev
 			else {
 				translate = 'translateX( calc( 100% + 15px ) )';
 				increment = -1;
+
+				// Disable prev button if we're back to the first select / option
+				if( s.currentSel + increment === 0 ) {
+
+					this.updateBtnStatus( s.prevBtn, true );
+				}
+
+				// Enable the next button
+				this.updateBtnStatus( s.nextBtn, false );
 			}
 
 			// Slide out current select
@@ -314,7 +355,7 @@ var s,
 		}
 
 		// Build new instructions
-		for( instruction of instructions ) {
+		for( var instruction of instructions ) {
 
 			listItem = document.createElement( 'li' );
 			listItem.appendChild( document.createTextNode( instruction ) );
@@ -340,7 +381,7 @@ var s,
 
 		// Loop through all images and generate hidden inputs
 		// Inputs needed to pass image data to the PHP script
-		for( image of s.images ) {
+		for( var image of s.images ) {
 
 			input = document.createElement( 'input' );
 			input.setAttribute( 'type', 'hidden' );
@@ -349,6 +390,8 @@ var s,
 
 			inputsHolder.appendChild( input );
 		}
+
+		// TODO: display:none/block for button when needed
 
 		// Show the form
 		s.formHolder.style.opacity = 1;
