@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		watch: {
 			scripts: {
-				files: ['./es6.js'],
+				files: ['./scripts/es6.js'],
 				tasks: ['babel'],
 				options: {
 					interrupt: true
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 	    babel: {
 	        dist: {
 	            files: {
-	                './script.js': './es6.js'
+	                './scripts/script.js': './scripts/es6.js'
 	            }
 	        }
 	    },
