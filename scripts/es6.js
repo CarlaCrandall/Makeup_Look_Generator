@@ -73,6 +73,24 @@ var s,
 		}
 	},
 
+	/**
+	* Helper function - Fade in/out the passed in element
+	*/
+	fadeElement: function( element, fadeOut ) {
+
+		var opacity = 1,
+			visibility = 'visible';
+
+		if( fadeOut ) {
+
+			opacity = 0;
+			visibility = 'hidden';
+		}
+
+		element.style.opacity = opacity;
+		element.style.visibility = visibility;
+	},
+
 
 	/*----------------------------------------------------------------------------------------
 
@@ -316,9 +334,7 @@ var s,
 		s.selHolder.appendChild( selContainer );
 
 		// Fade in select - Timeout needed for CSS animation
-		setTimeout( function() {
-			selContainer.style.opacity = 1;
-		}, 10 );
+		setTimeout( () => { this.fadeElement( selContainer, false); }, 10); 
 	},
 
 	/**
@@ -333,9 +349,9 @@ var s,
 			s.selHolder.removeChild( s.selHolder.lastChild );
 		}
 
-		// Hide steps holder and download form
-		s.stepsHolder.style.opacity = 0;
-		s.formHolder.style.opacity = 0;
+		// Fade out steps holder and download form
+		this.fadeElement( s.stepsHolder, true );
+		this.fadeElement( s.formHolder, true );
 	},
 
 	
@@ -366,7 +382,7 @@ var s,
 		img.alt = name;
 
 		// Fade in image
-		img.style.opacity = 1;
+		this.fadeElement( img, false );
 
 		// Update current list of images / choices
 		s.images = s.imgHolder.children;
@@ -385,7 +401,7 @@ var s,
 		for( len = s.images.length; index < len; index++ ) {
 
 			// Fade out image
-			s.images[ index ].style.opacity = 0;
+			this.fadeElement( s.images[ index ], true );
 		}
 	},
 
@@ -442,7 +458,8 @@ var s,
 			list.appendChild( listItem );
 		}
 
-		s.stepsHolder.style.opacity = 1;
+		// Fade in instructions
+		this.fadeElement( s.stepsHolder, false );
 	},
 
 
@@ -476,10 +493,8 @@ var s,
 			inputsHolder.appendChild( input );
 		}
 
-		// TODO: display:none/block for button when needed
-
-		// Show the form
-		s.formHolder.style.opacity = 1;
+		// Fade in form
+		this.fadeElement( s.formHolder, false );
 	}
 };
 

@@ -103,6 +103,24 @@ var s,
 		}
 	},
 
+	/**
+ * Helper function - Fade in/out the passed in element
+ */
+	fadeElement: function fadeElement(element, fadeOut) {
+
+		var opacity = 1,
+		    visibility = 'visible';
+
+		if (fadeOut) {
+
+			opacity = 0;
+			visibility = 'hidden';
+		}
+
+		element.style.opacity = opacity;
+		element.style.visibility = visibility;
+	},
+
 	/*----------------------------------------------------------------------------------------
  	MOBILE EXPERIENCE
  	------------------------------------------------------------------------------------------*/
@@ -305,6 +323,7 @@ var s,
  * Creates the markup needed for each question
  */
 	createSelect: function createSelect(data, imageType, type) {
+		var _this2 = this;
 
 		var selContainer, labelSpan, newSel, newOpt, nameCap;
 
@@ -381,7 +400,7 @@ var s,
 
 		// Fade in select - Timeout needed for CSS animation
 		setTimeout(function () {
-			selContainer.style.opacity = 1;
+			_this2.fadeElement(selContainer, false);
 		}, 10);
 	},
 
@@ -397,9 +416,9 @@ var s,
 			s.selHolder.removeChild(s.selHolder.lastChild);
 		}
 
-		// Hide steps holder and download form
-		s.stepsHolder.style.opacity = 0;
-		s.formHolder.style.opacity = 0;
+		// Fade out steps holder and download form
+		this.fadeElement(s.stepsHolder, true);
+		this.fadeElement(s.formHolder, true);
 	},
 
 	/*----------------------------------------------------------------------------------------
@@ -426,7 +445,7 @@ var s,
 		img.alt = name;
 
 		// Fade in image
-		img.style.opacity = 1;
+		this.fadeElement(img, false);
 
 		// Update current list of images / choices
 		s.images = s.imgHolder.children;
@@ -445,7 +464,7 @@ var s,
 		for (len = s.images.length; index < len; index++) {
 
 			// Fade out image
-			s.images[index].style.opacity = 0;
+			this.fadeElement(s.images[index], true);
 		}
 	},
 
@@ -492,6 +511,8 @@ var s,
 
 		// Build new instructions
 		var _iteratorNormalCompletion4 = true;
+
+		// Fade in instructions
 		var _didIteratorError4 = false;
 		var _iteratorError4 = undefined;
 
@@ -518,7 +539,7 @@ var s,
 			}
 		}
 
-		s.stepsHolder.style.opacity = 1;
+		this.fadeElement(s.stepsHolder, false);
 	},
 
 	/*----------------------------------------------------------------------------------------
@@ -540,9 +561,7 @@ var s,
 		// Inputs needed to pass image data to the PHP script
 		var _iteratorNormalCompletion5 = true;
 
-		// TODO: display:none/block for button when needed
-
-		// Show the form
+		// Fade in form
 		var _didIteratorError5 = false;
 		var _iteratorError5 = undefined;
 
@@ -572,7 +591,7 @@ var s,
 			}
 		}
 
-		s.formHolder.style.opacity = 1;
+		this.fadeElement(s.formHolder, false);
 	}
 };
 

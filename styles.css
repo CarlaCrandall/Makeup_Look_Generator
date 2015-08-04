@@ -72,8 +72,8 @@
 }
 
 .fade {
-  -webkit-transition: opacity 0.25s ease-in-out;
-  transition: opacity 0.25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out, visibility .25s ease-in-out;
+  transition: opacity .25s ease-in-out, visibility .25s ease-in-out;
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -160,9 +160,11 @@ img {
   position: absolute;
   top: 22px;
   opacity: 0;
+  visibility: hidden;
 }
 img:first-child {
   opacity: 1;
+  visibility: visible;
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -206,6 +208,7 @@ label {
   margin-bottom: 20px;
   line-height: 56px;
   opacity: 0;
+  visibility: hidden;
 }
 label:hover:after {
   color: #999;
@@ -320,6 +323,7 @@ select:focus, select:hover {
 #stepsHolder {
   margin: 20px 0 40px;
   opacity: 0;
+  visibility: hidden;
 }
 
 #stepTitle {
@@ -355,6 +359,7 @@ ol li {
   float: right;
   margin: 10px 0 0;
   opacity: 0;
+  visibility: hidden;
 }
 
 .button {
