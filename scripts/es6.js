@@ -1,5 +1,4 @@
 var s,
-	that,
 	MakeupGenerator = {
 
 	settings: {
@@ -20,7 +19,6 @@ var s,
 	*/
 	init: function() {
 		s = this.settings;
-		that = this;
 
 		var types = Object.keys( s.questions ),
 			newImg;
@@ -219,9 +217,9 @@ var s,
 	* Handles select menu change events when user selects
 	* or updates a choice
 	*/
-	optionUpdated: function() {
+	optionUpdated: function( e ) {
 
-		that.displayQuestion( this );
+		this.displayQuestion( e.target );
 	},
 
 	/**
@@ -288,7 +286,7 @@ var s,
 
 		// Create the select
 		newSel = document.createElement( 'select' );
-		newSel.addEventListener('change', this.optionUpdated, false);
+		newSel.addEventListener('change', this.optionUpdated.bind( this ), false);
 
 		// Create the first option (question text)
 		newOpt = document.createElement( 'option' );

@@ -3,7 +3,6 @@
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
 var s,
-    that,
     MakeupGenerator = {
 
 	settings: {
@@ -24,7 +23,6 @@ var s,
  */
 	init: function init() {
 		s = this.settings;
-		that = this;
 
 		var types = Object.keys(s.questions),
 		    newImg;
@@ -239,9 +237,9 @@ var s,
  * Handles select menu change events when user selects
  * or updates a choice
  */
-	optionUpdated: function optionUpdated() {
+	optionUpdated: function optionUpdated(e) {
 
-		that.displayQuestion(this);
+		this.displayQuestion(e.target);
 	},
 
 	/**
@@ -309,7 +307,7 @@ var s,
 
 		// Create the select
 		newSel = document.createElement('select');
-		newSel.addEventListener('change', this.optionUpdated, false);
+		newSel.addEventListener('change', this.optionUpdated.bind(this), false);
 
 		// Create the first option (question text)
 		newOpt = document.createElement('option');
