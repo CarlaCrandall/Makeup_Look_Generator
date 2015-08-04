@@ -15,7 +15,10 @@ var s,
 		stepsHolder: document.getElementById('stepsHolder'),
 		formHolder: document.getElementById('formHolder'),
 		nextBtn: document.getElementById('next'),
-		prevBtn: document.getElementById('prev')
+		prevBtn: document.getElementById('prev'),
+		translateRight: 'translateX( calc( 100% + 15px ) )',
+		translateLeft: 'translateX( calc( -100% - 15px ) )',
+		translateReset: 'translateX( 0 )'
 	},
 
 	/**
@@ -131,31 +134,54 @@ var s,
 
 		var selects = s.selHolder.children,
 		    translate = '',
-		    selClass = '',
-		    index = 0;
+		    selClass = '';
 
 		// Changing from desktop to mobile...
 		if (s.isMobile) {
 
 			s.currentSel = 0; // Send user back to first select for simplicity's sake
 
-			index = 1; // Skip over first select when updating position
-			translate = 'translateX( calc( 100% + 15px) )';
+			translate = s.translateRight;
 
 			this.updateBtnStatus(s.nextBtn, false); // Enable the next button
 		}
 		// Changing from mobile to desktop...
 		else {
 
-				translate = 'translateX( 0 )';
+				translate = s.translateReset;
 				selClass = 'fade';
 			}
 
 		// Update styling & transitions
-		for (var len = selects.length; index < len; index++) {
+		var _iteratorNormalCompletion2 = true;
+		var _didIteratorError2 = false;
+		var _iteratorError2 = undefined;
 
-			selects[index].style.transform = translate;
-			selects[index].setAttribute('class', selClass);
+		try {
+			for (var _iterator2 = selects[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+				var select = _step2.value;
+
+				// For mobile, skip over first select when updating position
+				if (!s.isMobile || s.isMobile && select !== s.selHolder.firstChild) {
+
+					select.style.transform = translate;
+				}
+
+				select.setAttribute('class', selClass);
+			}
+		} catch (err) {
+			_didIteratorError2 = true;
+			_iteratorError2 = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion2 && _iterator2['return']) {
+					_iterator2['return']();
+				}
+			} finally {
+				if (_didIteratorError2) {
+					throw _iteratorError2;
+				}
+			}
 		}
 	},
 
@@ -187,7 +213,7 @@ var s,
 
 			// User clicked next
 			if (next) {
-				translate = 'translateX( calc( -100% - 15px ) )';
+				translate = s.translateLeft;
 				increment = 1;
 
 				// Enable the prev button
@@ -201,7 +227,7 @@ var s,
 			}
 			// User clicked prev
 			else {
-					translate = 'translateX( calc( 100% + 15px ) )';
+					translate = s.translateRight;
 					increment = -1;
 
 					// Disable prev button if we're back to the first select / option
@@ -222,7 +248,7 @@ var s,
 
 			// Slide in next select
 			select = s.selHolder.children[s.currentSel];
-			select.style.transform = 'translateX( 0 )';
+			select.style.transform = s.translateReset;
 		}
 
 		// Do nothing if not mobile
@@ -294,7 +320,7 @@ var s,
 		else if (imageType) {
 
 				// Mobile selects should slide in
-				selContainer.style.transform = 'translateX( calc( 100% + 15px) )';
+				selContainer.style.transform = s.translateRight;
 
 				// Enable the next button
 				this.updateBtnStatus(s.nextBtn, false);
@@ -317,15 +343,15 @@ var s,
 		newSel.appendChild(newOpt);
 
 		// Create the rest of the options (question choices)
-		var _iteratorNormalCompletion2 = true;
+		var _iteratorNormalCompletion3 = true;
 
 		// Add select to the container
-		var _didIteratorError2 = false;
-		var _iteratorError2 = undefined;
+		var _didIteratorError3 = false;
+		var _iteratorError3 = undefined;
 
 		try {
-			for (var _iterator2 = data.options[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-				var option = _step2.value;
+			for (var _iterator3 = data.options[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+				var option = _step3.value;
 
 				// Capitalize first character
 				nameCap = option.charAt(0).toUpperCase() + option.slice(1);
@@ -336,16 +362,16 @@ var s,
 				newSel.appendChild(newOpt);
 			}
 		} catch (err) {
-			_didIteratorError2 = true;
-			_iteratorError2 = err;
+			_didIteratorError3 = true;
+			_iteratorError3 = err;
 		} finally {
 			try {
-				if (!_iteratorNormalCompletion2 && _iterator2['return']) {
-					_iterator2['return']();
+				if (!_iteratorNormalCompletion3 && _iterator3['return']) {
+					_iterator3['return']();
 				}
 			} finally {
-				if (_didIteratorError2) {
-					throw _iteratorError2;
+				if (_didIteratorError3) {
+					throw _iteratorError3;
 				}
 			}
 		}
@@ -465,29 +491,29 @@ var s,
 		this.removeChildNodes(list);
 
 		// Build new instructions
-		var _iteratorNormalCompletion3 = true;
-		var _didIteratorError3 = false;
-		var _iteratorError3 = undefined;
+		var _iteratorNormalCompletion4 = true;
+		var _didIteratorError4 = false;
+		var _iteratorError4 = undefined;
 
 		try {
-			for (var _iterator3 = instructions[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-				var instruction = _step3.value;
+			for (var _iterator4 = instructions[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+				var instruction = _step4.value;
 
 				listItem = document.createElement('li');
 				listItem.appendChild(document.createTextNode(instruction));
 				list.appendChild(listItem);
 			}
 		} catch (err) {
-			_didIteratorError3 = true;
-			_iteratorError3 = err;
+			_didIteratorError4 = true;
+			_iteratorError4 = err;
 		} finally {
 			try {
-				if (!_iteratorNormalCompletion3 && _iterator3['return']) {
-					_iterator3['return']();
+				if (!_iteratorNormalCompletion4 && _iterator4['return']) {
+					_iterator4['return']();
 				}
 			} finally {
-				if (_didIteratorError3) {
-					throw _iteratorError3;
+				if (_didIteratorError4) {
+					throw _iteratorError4;
 				}
 			}
 		}
@@ -512,17 +538,17 @@ var s,
 
 		// Loop through all images and generate hidden inputs
 		// Inputs needed to pass image data to the PHP script
-		var _iteratorNormalCompletion4 = true;
+		var _iteratorNormalCompletion5 = true;
 
 		// TODO: display:none/block for button when needed
 
 		// Show the form
-		var _didIteratorError4 = false;
-		var _iteratorError4 = undefined;
+		var _didIteratorError5 = false;
+		var _iteratorError5 = undefined;
 
 		try {
-			for (var _iterator4 = s.images[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-				var image = _step4.value;
+			for (var _iterator5 = s.images[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+				var image = _step5.value;
 
 				input = document.createElement('input');
 				input.setAttribute('type', 'hidden');
@@ -532,16 +558,16 @@ var s,
 				inputsHolder.appendChild(input);
 			}
 		} catch (err) {
-			_didIteratorError4 = true;
-			_iteratorError4 = err;
+			_didIteratorError5 = true;
+			_iteratorError5 = err;
 		} finally {
 			try {
-				if (!_iteratorNormalCompletion4 && _iterator4['return']) {
-					_iterator4['return']();
+				if (!_iteratorNormalCompletion5 && _iterator5['return']) {
+					_iterator5['return']();
 				}
 			} finally {
-				if (_didIteratorError4) {
-					throw _iteratorError4;
+				if (_didIteratorError5) {
+					throw _iteratorError5;
 				}
 			}
 		}

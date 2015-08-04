@@ -2,16 +2,19 @@ var s,
 	MakeupGenerator = {
 
 	settings: {
-		questions   : questionData,
-		isMobile	: true,
-		currentSel  : 0,
-		images      : [],
-		imgHolder   : document.getElementById( 'imgHolder' ),
-		selHolder   : document.getElementById( 'selHolder' ),
-		stepsHolder : document.getElementById( 'stepsHolder' ),
-		formHolder  : document.getElementById( 'formHolder' ),
-		nextBtn		: document.getElementById( 'next' ),
-		prevBtn		: document.getElementById( 'prev' )
+		questions   	: questionData,
+		isMobile		: true,
+		currentSel  	: 0,
+		images      	: [],
+		imgHolder   	: document.getElementById( 'imgHolder' ),
+		selHolder   	: document.getElementById( 'selHolder' ),
+		stepsHolder 	: document.getElementById( 'stepsHolder' ),
+		formHolder  	: document.getElementById( 'formHolder' ),
+		nextBtn			: document.getElementById( 'next' ),
+		prevBtn			: document.getElementById( 'prev' ),
+		translateRight	: 'translateX( calc( 100% + 15px ) )',
+		translateLeft	: 'translateX( calc( -100% - 15px ) )',
+		translateReset	: 'translateX( 0 )'
 	},
 
 	/**
@@ -105,31 +108,34 @@ var s,
 
 		var selects = s.selHolder.children,
 			translate = '',
-			selClass = '',
-			index = 0;
+			selClass = '';
 
 		// Changing from desktop to mobile...
 		if( s.isMobile ) {
 
 			s.currentSel = 0; // Send user back to first select for simplicity's sake
 
-			index = 1; // Skip over first select when updating position
-			translate = 'translateX( calc( 100% + 15px) )';
+			translate = s.translateRight;
 
 			this.updateBtnStatus( s.nextBtn, false ); // Enable the next button
 		}
 		// Changing from mobile to desktop...
 		else {
 
-			translate = 'translateX( 0 )';
+			translate = s.translateReset;
 			selClass = 'fade';
 		}
 
 		// Update styling & transitions
-		for( let len = selects.length; index < len; index++ ) {
+		for( let select of selects ) {
 
-			selects[ index ].style.transform = translate;
-			selects[ index ].setAttribute( 'class', selClass );
+			// For mobile, skip over first select when updating position
+			if( !s.isMobile || ( s.isMobile && select !== s.selHolder.firstChild ) ) {
+
+				select.style.transform = translate;
+			}
+
+			select.setAttribute( 'class', selClass );
 		}
 	},
 
@@ -161,7 +167,7 @@ var s,
 
 			// User clicked next
 			if( next ) {
-				translate = 'translateX( calc( -100% - 15px ) )';
+				translate = s.translateLeft;
 				increment = 1;
 
 				// Enable the prev button
@@ -175,7 +181,7 @@ var s,
 			}
 			// User clicked prev
 			else {
-				translate = 'translateX( calc( 100% + 15px ) )';
+				translate = s.translateRight;
 				increment = -1;
 
 				// Disable prev button if we're back to the first select / option
@@ -196,7 +202,7 @@ var s,
 
 			// Slide in next select
 			select = s.selHolder.children[ s.currentSel ];
-			select.style.transform = 'translateX( 0 )';
+			select.style.transform = s.translateReset;
 		}
 
 		// Do nothing if not mobile
@@ -271,7 +277,7 @@ var s,
 		else if( imageType ) {
 
 			// Mobile selects should slide in
-			selContainer.style.transform = 'translateX( calc( 100% + 15px) )';
+			selContainer.style.transform = s.translateRight;
 			
 			// Enable the next button
 			this.updateBtnStatus( s.nextBtn, false );
