@@ -7,7 +7,7 @@ var s,
 
 	settings: {
 		questions: questionData,
-		isMobile: false,
+		isMobile: true,
 		currentSel: 0,
 		images: [],
 		imgHolder: document.getElementById('imgHolder'),

@@ -3,7 +3,7 @@ var s,
 
 	settings: {
 		questions   : questionData,
-		isMobile	: false,
+		isMobile	: true,
 		currentSel  : 0,
 		images      : [],
 		imgHolder   : document.getElementById( 'imgHolder' ),
@@ -90,7 +90,6 @@ var s,
 		// Check screen size
 		s.isMobile = ( Number( window.innerWidth ) < 768 ) ? true : false;
 
-		
 		// Changing between different user experiences
 		if( s.isMobile !== prevIsMobile ) {
 			
@@ -157,7 +156,6 @@ var s,
 			increment,
 			select;
 
-		
 		// Next/Prev buttons are only needed for mobile devices
 		if( s.isMobile ) {
 
