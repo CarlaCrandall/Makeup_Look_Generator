@@ -71,6 +71,40 @@
   clear: both;
 }
 
+.button {
+  padding: 15px 10px;
+  background-color: #e5587e;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 400;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  -webkit-transition: background-color 0.25s ease-in-out;
+  transition: background-color 0.25s ease-in-out;
+}
+.button:hover {
+  background-color: #4ebcb2;
+}
+
+.secondary-button {
+  background-color: #fff;
+  border: 2px solid #e5587e;
+  color: #e5587e;
+  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+.secondary-button:hover {
+  background-color: #fff;
+  border-color: #4ebcb2;
+  color: #4ebcb2;
+}
+.secondary-button[disabled] {
+  cursor: default;
+  border-color: #CCC;
+  color: #CCC;
+}
+
 .fade {
   -webkit-transition: opacity .25s ease-in-out, visibility .25s ease-in-out;
   transition: opacity .25s ease-in-out, visibility .25s ease-in-out;
@@ -99,6 +133,12 @@
   .rightCol, .leftCol {
     width: 100%;
     clear: both;
+  }
+
+  .button {
+    margin-left: 15px;
+    padding: 10px 8px;
+    font-size: 14px;
   }
 }
 /*---------------------------------------
@@ -176,7 +216,7 @@ img:first-child {
 @media (max-width: 767px) {
   #imgHolder {
     min-height: 161px;
-    margin: 10px 0;
+    margin: 0 0 10px;
   }
 
   img {
@@ -294,25 +334,28 @@ select:focus, select:hover {
 }
 @media (max-width: 767px) {
   #selHolder {
-    min-height: 110px;
-    margin-top: 10px;
+    min-height: 105px;
+    margin-top: 0;
     padding: 0 15px;
     position: relative;
     overflow: hidden;
   }
 
   #selNav {
-    display: block;
-    padding: 0 15px;
-    text-align: right;
+    display: inline-block;
+    float: right;
+    margin-right: 15px;
   }
   #selNav .button {
     margin-left: 10px;
-    padding: 10px;
+  }
+  #selNav .button:first-of-type {
+    margin-left: 0;
   }
 
   label {
     position: absolute;
+    margin-bottom: 0;
     -webkit-transition: transform 0.25s ease-in-out;
     transition: transform 0.25s ease-in-out;
   }
@@ -362,33 +405,12 @@ ol li {
   visibility: hidden;
 }
 
-.button {
-  padding: 15px 10px;
-  background-color: #e5587e;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 400;
-  border-radius: 4px;
-  border-style: none;
-  cursor: pointer;
-  -webkit-transition: background-color 0.25s ease-in-out;
-  transition: background-color 0.25s ease-in-out;
-}
-.button:hover {
-  background-color: #4ebcb2;
-}
-.button[disabled] {
-  cursor: default;
-  background-color: #CCC !important;
-}
-
 @media (max-width: 991px) {
   #formHolder {
-    float: none;
-  }
-}
-@media (max-width: 767px) {
-  .button {
-    margin-left: 15px;
+    display: inline-block;
+    width: auto;
+    float: left;
+    clear: none;
+    margin: 0;
   }
 }

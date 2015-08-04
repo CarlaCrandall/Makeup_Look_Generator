@@ -9,34 +9,14 @@
 	visibility: hidden;	
 }
 
-.button {
-	padding: 15px 10px;
-	background-color: $pink;
-	color: #fff;
-	font-size: 18px;
-	font-weight: 400;
-	border-radius: 4px;
-	border-style: none;
-	cursor: pointer;
-	
-	@include transition( background-color ); // Hover Transition  
-
-	&:hover { background-color: $teal; }
-
-	&[disabled] { 
-		cursor: default;
-		background-color: $light-gray !important; 
-	}
-}
-
 // Mobile & Tablet
 @media( max-width: 991px ) {
 
-	#formHolder { float: none; }
-}
-
-// Mobile
-@media( max-width: 767px ) {
-	
-	.button { margin-left: 15px; }
+	#formHolder { 
+		display: inline-block;
+		width: auto;
+		float: left;
+		clear: none;
+		margin: 0; 
+	}
 }
