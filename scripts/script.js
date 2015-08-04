@@ -91,6 +91,22 @@ var s,
 	},
 
 	/**
+ * Helper function - Removes all child nodes
+ * of the passed in element
+ */
+	removeChildNodes: function removeChildNodes(parentEl) {
+
+		while (parentEl.lastChild) {
+
+			parentEl.removeChild(parentEl.lastChild);
+		}
+	},
+
+	/*----------------------------------------------------------------------------------------
+ 	MOBILE EXPERIENCE
+ 	------------------------------------------------------------------------------------------*/
+
+	/**
  * Sets settings.isMobile based on window size, so we
  * can create a different experience for mobile devices /
  * small screen sizes
@@ -144,6 +160,80 @@ var s,
 			selects[index].setAttribute('class', selClass);
 		}
 	},
+
+	/**
+ * Handles enabling and disabling the next/prev buttons
+ * for mobile devices / small screen sizes
+ */
+	updateBtnStatus: function updateBtnStatus(button, disable) {
+
+		// Next/Prev buttons are only needed for mobile devices
+		if (s.isMobile) {
+
+			button.disabled = disable;
+		}
+	},
+
+	/**
+ * For mobile devices, slide in the current select
+ * and slide out the next select
+ */
+	slideInOption: function slideInOption(next) {
+
+		var translate = '',
+		    increment,
+		    select;
+
+		// Next/Prev buttons are only needed for mobile devices
+		if (s.isMobile) {
+
+			// User clicked next
+			if (next) {
+				translate = 'translateX( calc( -100% - 15px ) )';
+				increment = 1;
+
+				// Enable the prev button
+				this.updateBtnStatus(s.prevBtn, false);
+
+				// Disable the next button when there is no next select
+				if (s.currentSel + increment === s.selHolder.children.length - 1) {
+
+					this.updateBtnStatus(s.nextBtn, true);
+				}
+			}
+			// User clicked prev
+			else {
+					translate = 'translateX( calc( 100% + 15px ) )';
+					increment = -1;
+
+					// Disable prev button if we're back to the first select / option
+					if (s.currentSel + increment === 0) {
+
+						this.updateBtnStatus(s.prevBtn, true);
+					}
+
+					// Enable the next button
+					this.updateBtnStatus(s.nextBtn, false);
+				}
+
+			// Slide out current select
+			select = s.selHolder.children[s.currentSel];
+			select.style.transform = translate;
+
+			s.currentSel = s.currentSel + increment;
+
+			// Slide in next select
+			select = s.selHolder.children[s.currentSel];
+			select.style.transform = 'translateX( 0 )';
+		}
+
+		// Do nothing if not mobile
+		return false;
+	},
+
+	/*----------------------------------------------------------------------------------------
+ 	QUESTION / SELECT GENERATION
+ 	------------------------------------------------------------------------------------------*/
 
 	/**
  * Handles select menu change events when user selects
@@ -288,75 +378,9 @@ var s,
 		s.formHolder.style.opacity = 0;
 	},
 
-	/**
- * Handles enabling and disabling the next/prev buttons
- * for mobile devices / small screen sizes
- */
-	updateBtnStatus: function updateBtnStatus(button, disable) {
-
-		// Next/Prev buttons are only needed for mobile devices
-		if (s.isMobile) {
-
-			button.disabled = disable;
-		}
-	},
-
-	/**
- * For mobile devices, slide in the current select
- * and slide out the next select
- */
-	slideInOption: function slideInOption(next) {
-
-		var translate = '',
-		    increment,
-		    select;
-
-		// Next/Prev buttons are only needed for mobile devices
-		if (s.isMobile) {
-
-			// User clicked next
-			if (next) {
-				translate = 'translateX( calc( -100% - 15px ) )';
-				increment = 1;
-
-				// Enable the prev button
-				this.updateBtnStatus(s.prevBtn, false);
-
-				// Disable the next button when there is no next select
-				if (s.currentSel + increment === s.selHolder.children.length - 1) {
-
-					this.updateBtnStatus(s.nextBtn, true);
-				}
-			}
-			// User clicked prev
-			else {
-					translate = 'translateX( calc( 100% + 15px ) )';
-					increment = -1;
-
-					// Disable prev button if we're back to the first select / option
-					if (s.currentSel + increment === 0) {
-
-						this.updateBtnStatus(s.prevBtn, true);
-					}
-
-					// Enable the next button
-					this.updateBtnStatus(s.nextBtn, false);
-				}
-
-			// Slide out current select
-			select = s.selHolder.children[s.currentSel];
-			select.style.transform = translate;
-
-			s.currentSel = s.currentSel + increment;
-
-			// Slide in next select
-			select = s.selHolder.children[s.currentSel];
-			select.style.transform = 'translateX( 0 )';
-		}
-
-		// Do nothing if not mobile
-		return false;
-	},
+	/*----------------------------------------------------------------------------------------
+ 	IMAGE GENERATION
+ 	------------------------------------------------------------------------------------------*/
 
 	/**
  * Updates images when user makes a selection
@@ -400,6 +424,10 @@ var s,
 			s.images[index].style.opacity = 0;
 		}
 	},
+
+	/*----------------------------------------------------------------------------------------
+ 	INSTRUCTION LIST GENERATION
+ 	------------------------------------------------------------------------------------------*/
 
 	/**
  * Generate instructions array based on user's choices
@@ -469,6 +497,10 @@ var s,
 		s.stepsHolder.style.opacity = 1;
 	},
 
+	/*----------------------------------------------------------------------------------------
+ 	DOWNLOAD FORM / BUTTON GENERATION
+ 	------------------------------------------------------------------------------------------*/
+
 	/**
  * Generates and displays necessary form elements
  */
@@ -517,19 +549,7 @@ var s,
 		}
 
 		s.formHolder.style.opacity = 1;
-	},
-
-	/**
- * Remove all child nodes of the passed in element
- */
-	removeChildNodes: function removeChildNodes(parentEl) {
-
-		while (parentEl.lastChild) {
-
-			parentEl.removeChild(parentEl.lastChild);
-		}
 	}
-
 };
 
 (function () {
