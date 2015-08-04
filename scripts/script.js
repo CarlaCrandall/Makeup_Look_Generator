@@ -74,18 +74,19 @@ var s,
  * Bind necessary event handlers
  */
 	bindEvents: function bindEvents() {
+		var _this = this;
 
 		// Bind window resize event
-		window.addEventListener('resize', this.checkForMobile, true);
+		window.addEventListener('resize', this.checkForMobile.bind(this), true);
 
 		// Click event for previous button
 		s.prevBtn.addEventListener('click', function () {
-			that.slideInOption(false);
+			_this.slideInOption(false);
 		}, false);
 
 		// Click event for next button
 		s.nextBtn.addEventListener('click', function () {
-			that.slideInOption(true);
+			_this.slideInOption(true);
 		}, false);
 	},
 
@@ -96,7 +97,52 @@ var s,
  */
 	checkForMobile: function checkForMobile() {
 
+		var prevIsMobile = s.isMobile;
+
+		// Check screen size
 		s.isMobile = Number(window.innerWidth) < 768 ? true : false;
+
+		// Changing between different user experiences
+		if (s.isMobile !== prevIsMobile) {
+
+			this.changeUserExperience();
+		}
+	},
+
+	/**
+ * Updates necessary variables and DOM elements when switching
+ * between the mobile and desktop experiences
+ */
+	changeUserExperience: function changeUserExperience() {
+
+		var selects = s.selHolder.children,
+		    translate = '',
+		    selClass = '',
+		    index = 0;
+
+		// Changing from desktop to mobile...
+		if (s.isMobile) {
+
+			s.currentSel = 0; // Send user back to first select for simplicity's sake
+
+			index = 1; // Skip over first select when updating position
+			translate = 'translateX( calc( 100% + 15px) )';
+
+			this.updateBtnStatus(s.nextBtn, false); // Enable the next button
+		}
+		// Changing from mobile to desktop...
+		else {
+
+				translate = 'translateX( 0 )';
+				selClass = 'fade';
+			}
+
+		// Update styling & transitions
+		for (var len = selects.length; index < len; index++) {
+
+			selects[index].style.transform = translate;
+			selects[index].setAttribute('class', selClass);
+		}
 	},
 
 	/**
@@ -390,10 +436,7 @@ var s,
 		    listItem;
 
 		// Remove past instructions
-		while (list.lastChild) {
-
-			list.removeChild(list.lastChild);
-		}
+		this.removeChildNodes(list);
 
 		// Build new instructions
 		var _iteratorNormalCompletion3 = true;
@@ -435,10 +478,7 @@ var s,
 		    input;
 
 		// Remove past inputs/choices
-		while (inputsHolder.lastChild) {
-
-			inputsHolder.removeChild(inputsHolder.lastChild);
-		}
+		this.removeChildNodes(inputsHolder);
 
 		// Loop through all images and generate hidden inputs
 		// Inputs needed to pass image data to the PHP script
@@ -477,6 +517,17 @@ var s,
 		}
 
 		s.formHolder.style.opacity = 1;
+	},
+
+	/**
+ * Remove all child nodes of the passed in element
+ */
+	removeChildNodes: function removeChildNodes(parentEl) {
+
+		while (parentEl.lastChild) {
+
+			parentEl.removeChild(parentEl.lastChild);
+		}
 	}
 
 };
