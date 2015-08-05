@@ -5,14 +5,14 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		watch: {
 			scripts: {
-				files: ['./scripts/es6.js'],
+				files: ['./src/scripts/es6.js'],
 				tasks: ['babel'],
 				options: {
 					interrupt: true
 				},
 			},
 			sass: {
-				files: ['./scss/*.scss'],
+				files: ['./src/scss/*.scss'],
 				tasks: ['sass'],
 				options: {
 					interrupt: true
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 	    babel: {
 	        dist: {
 	            files: {
-	                './scripts/script.js': './scripts/es6.js'
+	                './src/scripts/script.js': './src/scripts/es6.js'
 	            }
 	        }
 	    },
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
 					style: 'expanded'
 				},
 				files: {                         
-					'./styles.css': './scss/main.scss'
+					'./src/styles.css': './src/scss/main.scss'
 				}
 	        }
 	      }
