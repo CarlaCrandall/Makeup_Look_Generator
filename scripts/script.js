@@ -2,16 +2,16 @@
 
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
-var s,
+var settings,
     MakeupGenerator = {
 
 	settings: {
 		questions: questionData,
 		isMobile: true,
-		currentSel: 0,
+		currentSelectIndex: 0,
 		images: [],
 		imgHolder: document.getElementById('imgHolder'),
-		selHolder: document.getElementById('selHolder'),
+		selectHolder: document.getElementById('selHolder'),
 		stepsHolder: document.getElementById('stepsHolder'),
 		formHolder: document.getElementById('formHolder'),
 		nextBtn: document.getElementById('next'),
@@ -25,9 +25,9 @@ var s,
  * Initial app setup
  */
 	init: function init() {
-		s = this.settings;
+		settings = this.settings;
 
-		var types = Object.keys(s.questions),
+		var types = Object.keys(settings.questions),
 		    newImg;
 
 		this.checkForMobile();
@@ -49,7 +49,7 @@ var s,
 				newImg.setAttribute('id', type);
 				newImg.setAttribute('class', 'fade');
 
-				s.imgHolder.appendChild(newImg);
+				settings.imgHolder.appendChild(newImg);
 			}
 		} catch (err) {
 			_didIteratorError = true;
@@ -66,7 +66,7 @@ var s,
 			}
 		}
 
-		this.displayQuestion(document.getElementById('initSelect'));
+		this.optionUpdated(document.getElementById('initSelect'));
 
 		this.bindEvents();
 	},
@@ -81,12 +81,12 @@ var s,
 		window.addEventListener('resize', this.checkForMobile.bind(this), true);
 
 		// Click event for previous button
-		s.prevBtn.addEventListener('click', function () {
+		settings.prevBtn.addEventListener('click', function () {
 			_this.slideInOption(false);
 		}, false);
 
 		// Click event for next button
-		s.nextBtn.addEventListener('click', function () {
+		settings.nextBtn.addEventListener('click', function () {
 			_this.slideInOption(true);
 		}, false);
 	},
@@ -132,13 +132,13 @@ var s,
  */
 	checkForMobile: function checkForMobile() {
 
-		var prevIsMobile = s.isMobile;
+		var prevIsMobile = settings.isMobile;
 
 		// Check screen size
-		s.isMobile = Number(window.innerWidth) < 768 ? true : false;
+		settings.isMobile = Number(window.innerWidth) < 768 ? true : false;
 
 		// Changing between different user experiences
-		if (s.isMobile !== prevIsMobile) {
+		if (settings.isMobile !== prevIsMobile) {
 
 			this.changeUserExperience();
 		}
@@ -150,24 +150,32 @@ var s,
  */
 	changeUserExperience: function changeUserExperience() {
 
-		var selects = s.selHolder.children,
+		var selects = settings.selectHolder.children,
 		    translate = '',
-		    selClass = '';
+		    classname = '';
 
 		// Changing from desktop to mobile...
-		if (s.isMobile) {
+		if (settings.isMobile) {
 
-			s.currentSel = 0; // Send user back to first select for simplicity's sake
+			// Disable prev button
+			settings.prevBtn.disabled = true;
 
-			translate = s.translateRight;
+			// Enable next button if there is a next select
+			if (selects.length > 1) {
 
-			this.updateBtnStatus(s.nextBtn, false); // Enable the next button
+				settings.nextBtn.disabled = false;
+			}
+
+			// Send user back to first select for simplicity's sake
+			settings.currentSelectIndex = 0;
+
+			translate = settings.translateRight;
 		}
 		// Changing from mobile to desktop...
 		else {
 
-				translate = s.translateReset;
-				selClass = 'fade';
+				translate = settings.translateReset;
+				classname = 'fade';
 			}
 
 		// Update styling & transitions
@@ -180,12 +188,12 @@ var s,
 				var select = _step2.value;
 
 				// For mobile, skip over first select when updating position
-				if (!s.isMobile || s.isMobile && select !== s.selHolder.firstChild) {
+				if (!settings.isMobile || settings.isMobile && select !== settings.selectHolder.firstChild) {
 
 					select.style.transform = translate;
 				}
 
-				select.setAttribute('class', selClass);
+				select.setAttribute('class', classname);
 			}
 		} catch (err) {
 			_didIteratorError2 = true;
@@ -204,19 +212,6 @@ var s,
 	},
 
 	/**
- * Handles enabling and disabling the next/prev buttons
- * for mobile devices / small screen sizes
- */
-	updateBtnStatus: function updateBtnStatus(button, disable) {
-
-		// Next/Prev buttons are only needed for mobile devices
-		if (s.isMobile) {
-
-			button.disabled = disable;
-		}
-	},
-
-	/**
  * For mobile devices, slide in the current select
  * and slide out the next select
  */
@@ -227,46 +222,47 @@ var s,
 		    select;
 
 		// Next/Prev buttons are only needed for mobile devices
-		if (s.isMobile) {
+		if (settings.isMobile) {
 
 			// User clicked next
 			if (next) {
-				translate = s.translateLeft;
+				translate = settings.translateLeft;
 				increment = 1;
 
 				// Enable the prev button
-				this.updateBtnStatus(s.prevBtn, false);
+				settings.prevBtn.disabled = false;
 
 				// Disable the next button when there is no next select
-				if (s.currentSel + increment === s.selHolder.children.length - 1) {
+				if (settings.currentSelectIndex + increment === settings.selectHolder.children.length - 1) {
 
-					this.updateBtnStatus(s.nextBtn, true);
+					settings.nextBtn.disabled = true;
 				}
 			}
 			// User clicked prev
 			else {
-					translate = s.translateRight;
+					translate = settings.translateRight;
 					increment = -1;
 
 					// Disable prev button if we're back to the first select / option
-					if (s.currentSel + increment === 0) {
+					if (settings.currentSelectIndex + increment === 0) {
 
-						this.updateBtnStatus(s.prevBtn, true);
+						settings.prevBtn.disabled = true;
 					}
 
 					// Enable the next button
-					this.updateBtnStatus(s.nextBtn, false);
+					settings.nextBtn.disabled = false;
 				}
 
 			// Slide out current select
-			select = s.selHolder.children[s.currentSel];
+			select = settings.selectHolder.children[settings.currentSelectIndex];
 			select.style.transform = translate;
 
-			s.currentSel = s.currentSel + increment;
+			// Update current select index
+			settings.currentSelectIndex = settings.currentSelectIndex + increment;
 
 			// Slide in next select
-			select = s.selHolder.children[s.currentSel];
-			select.style.transform = s.translateReset;
+			select = settings.selectHolder.children[settings.currentSelectIndex];
+			select.style.transform = settings.translateReset;
 		}
 
 		// Do nothing if not mobile
@@ -282,26 +278,19 @@ var s,
  * or updates a choice
  */
 	optionUpdated: function optionUpdated(e) {
-
-		this.displayQuestion(e.target);
-	},
-
-	/**
- * Display the next question
- */
-	displayQuestion: function displayQuestion(select) {
-		var _select$value$split = select.value.split('|');
-
-		// Data for question/options
+		var select = e.target || e; // Data for question/options
 
 		// Load the image
+
+		var _select$value$split = select.value.split('|');
 
 		var _select$value$split2 = _slicedToArray(_select$value$split, 3);
 
 		var type = _select$value$split2[0];
 		var name = _select$value$split2[1];
+		// e.target for event handling, e for initial function call
 		var imageType = _select$value$split2[2]; // Question type, previous answer (to load image), previous type (to load image)
-		var data = s.questions[type];if (imageType && name) {
+		var data = settings.questions[type];if (imageType && name) {
 			this.updateImages(imageType, name);
 		}
 
@@ -309,7 +298,7 @@ var s,
 		if (data) {
 
 			this.removePrevChoices(select);
-			this.createSelect(data, imageType, type);
+			this.displayQuestion(type, imageType, data);
 		}
 		// Reached end of the questions, show instructions & download form
 		else {
@@ -320,65 +309,95 @@ var s,
 	},
 
 	/**
- * Creates the markup needed for each question
+ * Display the next question
  */
-	createSelect: function createSelect(data, imageType, type) {
+	displayQuestion: function displayQuestion(type, imageType, data) {
 		var _this2 = this;
 
-		var selContainer, labelSpan, newSel, newOpt, nameCap;
+		var label, select;
+
+		// Enable the next button for mobile devices
+		if (settings.isMobile && imageType) {
+
+			settings.nextBtn.disabled = false;
+		}
+
+		// Create the question (label & select)
+		label = this.createLabel(imageType, data);
+		select = this.createSelect(data, type);
+
+		// Add question to the container
+		label.appendChild(select);
+		settings.selectHolder.appendChild(label);
+
+		// Fade in question - Timeout needed for CSS animation
+		setTimeout(function () {
+			_this2.fadeElement(label, false);
+		}, 10);
+	},
+
+	/**
+ * Creates the markup needed for each label 
+ * (contains the select for styling purposes)
+ */
+	createLabel: function createLabel(imageType, data) {
+
+		var label, span;
 
 		// Create label
-		selContainer = document.createElement('label');
+		label = document.createElement('label');
 
-		// Tablet & Desktop selects should fade in
-		if (!s.isMobile) {
+		// Tablet & Desktop questions should fade in
+		if (!settings.isMobile) {
 
-			selContainer.setAttribute('class', 'fade');
+			label.setAttribute('class', 'fade');
 		}
 		// Mobile devices offer different user experience
 		else if (imageType) {
 
-				// Mobile selects should slide in
-				selContainer.style.transform = s.translateRight;
-
-				// Enable the next button
-				this.updateBtnStatus(s.nextBtn, false);
+				// Mobile questions should slide in
+				label.style.transform = settings.translateRight;
 			}
 
 		// Wrap text in span for styling purposes
-		labelSpan = document.createElement('span');
-		labelSpan.appendChild(document.createTextNode(data.optionLabel + ':'));
-		selContainer.appendChild(labelSpan);
+		span = document.createElement('span');
+		span.appendChild(document.createTextNode(data.optionLabel + ':'));
+
+		label.appendChild(span);
+
+		return label;
+	},
+
+	/**
+ * Creates the markup needed for each select dropdown
+ */
+	createSelect: function createSelect(data, type) {
+
+		var select, option, nameCap;
 
 		// Create the select
-		newSel = document.createElement('select');
-		newSel.addEventListener('change', this.optionUpdated.bind(this), false);
+		select = document.createElement('select');
+		select.addEventListener('change', this.optionUpdated.bind(this), false);
 
-		// Create the first option (question text)
-		newOpt = document.createElement('option');
-		newOpt.setAttribute('disabled', 'disabled');
-		newOpt.setAttribute('selected', 'selected');
-		newOpt.appendChild(document.createTextNode('Choose your ' + data.optionLabel + '...'));
-		newSel.appendChild(newOpt);
+		// Create and append the first option (question text)
+		option = this.createOption(null, 'Choose your ' + data.optionLabel + '...', true);
+		select.appendChild(option);
 
 		// Create the rest of the options (question choices)
 		var _iteratorNormalCompletion3 = true;
-
-		// Add select to the container
 		var _didIteratorError3 = false;
 		var _iteratorError3 = undefined;
 
 		try {
 			for (var _iterator3 = data.options[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-				var option = _step3.value;
+				var choice = _step3.value;
 
 				// Capitalize first character
-				nameCap = option.charAt(0).toUpperCase() + option.slice(1);
+				nameCap = choice.charAt(0).toUpperCase() + choice.slice(1);
 
-				newOpt = document.createElement('option');
-				newOpt.setAttribute('value', data.nextType + '|' + option + '|' + type);
-				newOpt.appendChild(document.createTextNode(nameCap));
-				newSel.appendChild(newOpt);
+				// Create and append the option
+				option = this.createOption(data.nextType + '|' + choice + '|' + type, nameCap, false);
+				select.appendChild(option);
 			}
 		} catch (err) {
 			_didIteratorError3 = true;
@@ -395,13 +414,30 @@ var s,
 			}
 		}
 
-		selContainer.appendChild(newSel);
-		s.selHolder.appendChild(selContainer);
+		return select;
+	},
 
-		// Fade in select - Timeout needed for CSS animation
-		setTimeout(function () {
-			_this2.fadeElement(selContainer, false);
-		}, 10);
+	/**
+ * Creates the markup needed for each option
+ * of the select dropdown
+ */
+	createOption: function createOption(value, textNode, firstOption) {
+
+		var option;
+
+		option = document.createElement('option');
+
+		// Create the first option (question text)
+		if (firstOption) {
+
+			option.setAttribute('disabled', 'disabled');
+			option.setAttribute('selected', 'selected');
+		}
+
+		option.setAttribute('value', value);
+		option.appendChild(document.createTextNode(textNode));
+
+		return option;
 	},
 
 	/**
@@ -411,14 +447,14 @@ var s,
 	removePrevChoices: function removePrevChoices(select) {
 
 		// User changed a previous option...
-		while (select.parentNode !== s.selHolder.lastChild) {
+		while (select.parentNode !== settings.selectHolder.lastChild) {
 
-			s.selHolder.removeChild(s.selHolder.lastChild);
+			settings.selectHolder.removeChild(settings.selectHolder.lastChild);
 		}
 
 		// Fade out steps holder and download form
-		this.fadeElement(s.stepsHolder, true);
-		this.fadeElement(s.formHolder, true);
+		this.fadeElement(settings.stepsHolder, true);
+		this.fadeElement(settings.formHolder, true);
 	},
 
 	/*----------------------------------------------------------------------------------------
@@ -448,7 +484,7 @@ var s,
 		this.fadeElement(img, false);
 
 		// Update current list of images / choices
-		s.images = s.imgHolder.children;
+		settings.images = settings.imgHolder.children;
 	},
 
 	/**
@@ -457,14 +493,13 @@ var s,
  */
 	clearImages: function clearImages(img) {
 
-		var index = Array.prototype.indexOf.call(s.images, img) + 1,
-		    len;
+		var index = Array.prototype.indexOf.call(settings.images, img) + 1;
 
 		// Hide image choices that come after currently selected image
-		for (len = s.images.length; index < len; index++) {
+		for (var len = settings.images.length; index < len; index++) {
 
 			// Fade out image
-			this.fadeElement(s.images[index], true);
+			this.fadeElement(settings.images[index], true);
 		}
 	},
 
@@ -479,16 +514,14 @@ var s,
 
 		var instructions = [],
 		    step = '',
-		    type = '',
-		    i,
-		    len;
+		    type = '';
 
 		// Build out each step
 		// Don't need a step for first image - it's just the base eye
-		for (i = 1, len = s.images.length; i < len; i++) {
+		for (var i = 1, len = settings.images.length; i < len; i++) {
 
-			type = s.images[i].id;
-			step = s.questions[type].instruction[0] + ' ' + s.images[i].alt + ' ' + s.questions[type].instruction[1];
+			type = settings.images[i].id;
+			step = settings.questions[type].instruction[0] + ' ' + settings.images[i].alt + ' ' + settings.questions[type].instruction[1];
 
 			instructions.push(step);
 		}
@@ -539,7 +572,7 @@ var s,
 			}
 		}
 
-		this.fadeElement(s.stepsHolder, false);
+		this.fadeElement(settings.stepsHolder, false);
 	},
 
 	/*----------------------------------------------------------------------------------------
@@ -566,7 +599,7 @@ var s,
 		var _iteratorError5 = undefined;
 
 		try {
-			for (var _iterator5 = s.images[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+			for (var _iterator5 = settings.images[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
 				var image = _step5.value;
 
 				input = document.createElement('input');
@@ -591,7 +624,7 @@ var s,
 			}
 		}
 
-		this.fadeElement(s.formHolder, false);
+		this.fadeElement(settings.formHolder, false);
 	}
 };
 
