@@ -1,12 +1,17 @@
 /*---------------------------------------
-   Select Styles
+   Question Styles
 -----------------------------------------*/
-#selHolder {
+#questionHolder {
 	min-height: 380px;
 	margin-top: 20px; 
 }
 
-#selNav { display: none; }
+#questionNav { display: none; }
+
+.question {
+	opacity: 0;
+	visibility: hidden;
+}
 
 label {
 	height: 56px;
@@ -15,8 +20,6 @@ label {
     display: inline-block;
     margin-bottom: 20px;
     line-height: 56px;
-    opacity: 0;
-    visibility: hidden;
 
     &:hover:after { color: $dark-gray; }
 
@@ -109,7 +112,7 @@ select {
 // Mobile
 @media( max-width: 767px ) {
 	
-	#selHolder { 
+	#questionHolder { 
 		min-height: 105px;
 		margin-top: 0;
 		padding: 0 15px; 
@@ -117,7 +120,7 @@ select {
 		overflow: hidden;
 	}
 
-	#selNav { 
+	#questionNav { 
 		display: inline-block;
 		float: right;
 		margin-right: 15px;

@@ -35,7 +35,7 @@
     clear: both;
 }
 
-.button {
+input[type='button'], input[type='submit'] {
 	padding: 15px 10px;
 	background-color: $pink;
 	color: #fff;
@@ -50,10 +50,11 @@
 	&:hover { background-color: $teal; }
 }
 
-.secondary-button {
+input[type='button'] {
 	background-color: #fff;
 	border: 2px solid $pink;
 	color: $pink;
+	text-transform: capitalize;
 
 	@include transition( all ); // Hover Transition
 
@@ -100,9 +101,11 @@
 		clear: both;
 	}
 
-	.button { 
-		margin-left: 15px; 
+	input[type='button'], input[type='submit']  { 
+		margin-left: 10px; 
 		padding: 10px 8px;
 		font-size: 14px;
 	}
+
+	input[type='submit']  { margin-left: 15px; }
 }
