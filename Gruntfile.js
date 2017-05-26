@@ -56,7 +56,7 @@ module.exports = function(grunt) {
 	    				flatten: true
 	    			},
 	    			{
-	    				src: ['./src/scripts/vendor/browser-polyfill.min.js', './src/scripts/data.js'],
+	    				src: ['./node_modules/babel-polyfill/dist/polyfill.min.js', './src/scripts/data.js'],
 	    				dest: 'build/scripts/',
 	    				expand: true,
 	    				flatten: true
