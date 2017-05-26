@@ -8,7 +8,7 @@ class Button extends Element {
 	 * @param { string } value - the button value
 	 * @param { function } onclick - the function to call when button is clicked
 	 */
-	constructor(value, onclick) {
+	constructor(value, onClick) {
 		super({
 			tag: 'input',
 			attributes: {
@@ -18,24 +18,16 @@ class Button extends Element {
 			}
 		});
 
-		this.onclick = onclick;
+		this.onClick = onClick;
 	}
 
 	/**
-	 * Build button markup
+	 * Build button markup and bind click event listener
 	 */
 	toHTML() {
 		super.toHTML();
-		this.element.addEventListener('click', this.btnClicked.bind(this), false);
+		this.element.addEventListener('click', () => this.onClick(), false);
 		return this.element;
-	}
-
-	/**
-	 * User clicked a button - figure out if previous or next and call the onclick function
-	 */
-	btnClicked() {
-		var next = (this.attributes.value === 'next') ? true : false;
-		this.onclick(next);
 	}
 
 	/**

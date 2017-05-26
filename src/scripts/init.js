@@ -102,8 +102,8 @@ var MakeupGenerator = {
 	 */
 	createMobileNav: function() {
 		var navHolder = document.getElementById('questionNav');
-			this.settings.prevBtn = new Button('prev', this.slideInQuestion);
-			this.settings.nextBtn = new Button('next', this.slideInQuestion);
+			this.settings.prevBtn = new Button('prev', () => this.slideInQuestion(false));
+			this.settings.nextBtn = new Button('next', () => this.slideInQuestion(true));
 
 		this.displayElement(navHolder, this.settings.prevBtn);
 		this.displayElement(navHolder, this.settings.nextBtn);
