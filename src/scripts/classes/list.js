@@ -25,7 +25,7 @@ class List extends Element {
 		for (let question of this.answeredQuestions) {
 			listItem = new Element({
 				tag: 'li',
-				textNode: `${question.questionData.instruction[0]} ${question.selectedOption} ${question.questionData.instruction[1]}`
+				textNode: question.questionData.instruction.replace('[OPTION]', question.selectedOption)
 			});
 
 			this.element.appendChild(listItem.toHTML());
