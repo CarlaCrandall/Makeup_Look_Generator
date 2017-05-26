@@ -11,8 +11,7 @@ class Element {
 	 * @param { object } options.attributes - the attributes for the element
 	 * @param { string } options.textNode - the text that should be appended to the element
 	 */
-	constructor( options = {} ) {
-
+	constructor(options = {}) {
 		this.tag = options.tag || 'div';
 		this.attributes = options.attributes || null;
 		this.textNode = options.textNode || null;
@@ -23,26 +22,21 @@ class Element {
 	 * Build element markup
 	 */
 	toHTML() {
-
 		// Create the element
 		this.element = document.createElement( this.tag );
 
 		// Add any attributes
-		if( this.attributes ) {
-
-			for( let property in this.attributes ) {
-
-				if( this.attributes.hasOwnProperty( property ) ) {
-
-					this.element.setAttribute( property, this.attributes[ property ] );
+		if (this.attributes) {
+			for (let property in this.attributes) {
+				if (this.attributes.hasOwnProperty(property)) {
+					this.element.setAttribute(property, this.attributes[property]);
 				}
 			}
 		}
 
 		// Append the text node
-		if( this.textNode ) {
-
-			this.element.appendChild( document.createTextNode( this.textNode ) );
+		if (this.textNode) {
+			this.element.appendChild(document.createTextNode(this.textNode));
 		}
 
 		return this.element;
@@ -52,7 +46,6 @@ class Element {
 	 * Fade element in
 	 */
 	fadeIn() {
-
 		var opacity = 1,
 			visibility = 'visible';
 
@@ -68,7 +61,6 @@ class Element {
 	 * Removes element markup from the DOM
 	 */
 	removeFromDOM() {
-
-		this.element.parentNode.removeChild( this.element );
+		this.element.parentNode.removeChild(this.element);
 	}
 }

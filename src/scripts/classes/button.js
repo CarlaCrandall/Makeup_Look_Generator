@@ -8,14 +8,13 @@ class Button extends Element {
 	 * @param { string } value - the button value
 	 * @param { function } onclick - the function to call when button is clicked
 	 */
-	constructor( value, onclick ) {
-
+	constructor(value, onclick) {
 		super({
-			'tag' : 'input',
-			'attributes': { 
-				'type'  : 'button', 
-				'value' : value,
-				'name'  : value + 'Btn'
+			tag: 'input',
+			attributes: {
+				type: 'button',
+				value: value,
+				name: value + 'Btn'
 			}
 		});
 
@@ -26,12 +25,8 @@ class Button extends Element {
 	 * Build button markup
 	 */
 	toHTML() {
-
 		super.toHTML();
-
-		// Add the on change event listener
-		this.element.addEventListener( 'click', this.btnClicked.bind( this ), false );
-	
+		this.element.addEventListener('click', this.btnClicked.bind(this), false);
 		return this.element;
 	}
 
@@ -39,18 +34,15 @@ class Button extends Element {
 	 * User clicked a button - figure out if previous or next and call the onclick function
 	 */
 	btnClicked() {
-
-		var next = ( this.attributes.value === 'next' ) ? true : false;
-
-		this.onclick( next );
+		var next = (this.attributes.value === 'next') ? true : false;
+		this.onclick(next);
 	}
 
 	/**
 	 * Toggle disabled/enabled state of the button
 	 * @param { boolean } state - determines whether button should be disabled or enabled
 	 */
-	disable( state ) {
-
+	disable(state) {
 		this.element.disabled = state;
 	}
 }

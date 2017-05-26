@@ -44,17 +44,13 @@ var Element = (function () {
 	_createClass(Element, [{
 		key: 'toHTML',
 		value: function toHTML() {
-
 			// Create the element
 			this.element = document.createElement(this.tag);
 
 			// Add any attributes
 			if (this.attributes) {
-
 				for (var property in this.attributes) {
-
 					if (this.attributes.hasOwnProperty(property)) {
-
 						this.element.setAttribute(property, this.attributes[property]);
 					}
 				}
@@ -62,7 +58,6 @@ var Element = (function () {
 
 			// Append the text node
 			if (this.textNode) {
-
 				this.element.appendChild(document.createTextNode(this.textNode));
 			}
 
@@ -75,7 +70,6 @@ var Element = (function () {
 	}, {
 		key: 'fadeIn',
 		value: function fadeIn() {
-
 			var opacity = 1,
 			    visibility = 'visible';
 
@@ -93,7 +87,6 @@ var Element = (function () {
 	}, {
 		key: 'removeFromDOM',
 		value: function removeFromDOM() {
-
 			this.element.parentNode.removeChild(this.element);
 		}
 	}]);
@@ -112,8 +105,7 @@ var Select = (function (_Element) {
 	function Select(questionData) {
 		_classCallCheck(this, Select);
 
-		_get(Object.getPrototypeOf(Select.prototype), 'constructor', this).call(this, { 'tag': 'select' });
-
+		_get(Object.getPrototypeOf(Select.prototype), 'constructor', this).call(this, { tag: 'select' });
 		this.questionData = questionData;
 	}
 
@@ -122,13 +114,12 @@ var Select = (function (_Element) {
   */
 
 	/**
-  * Build select markup 
+  * Build select markup
   */
 
 	_createClass(Select, [{
 		key: 'toHTML',
 		value: function toHTML() {
-
 			var option,
 			    nameCap = '';
 
@@ -137,12 +128,12 @@ var Select = (function (_Element) {
 
 			// Create the first Option (question text)
 			option = new Element({
-				'tag': 'option',
-				'attributes': {
-					'disabled': 'disabled',
-					'selected': 'selected'
+				tag: 'option',
+				attributes: {
+					disabled: 'disabled',
+					selected: 'selected'
 				},
-				'textNode': 'Choose your ' + this.questionData.questionLabel + '...'
+				textNode: 'Choose your ' + this.questionData.questionLabel + '...'
 			});
 
 			this.element.appendChild(option.toHTML());
@@ -156,13 +147,12 @@ var Select = (function (_Element) {
 				for (var _iterator = this.questionData.choices[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var choice = _step.value;
 
-					// Capitalize first character
 					nameCap = choice.charAt(0).toUpperCase() + choice.slice(1);
 
 					option = new Element({
-						'tag': 'option',
-						'attributes': { 'value': choice },
-						'textNode': nameCap
+						tag: 'option',
+						attributes: { value: choice },
+						textNode: nameCap
 					});
 
 					this.element.appendChild(option.toHTML());
@@ -200,8 +190,7 @@ var List = (function (_Element2) {
 	function List(answeredQuestions) {
 		_classCallCheck(this, List);
 
-		_get(Object.getPrototypeOf(List.prototype), 'constructor', this).call(this, { 'tag': 'ol' });
-
+		_get(Object.getPrototypeOf(List.prototype), 'constructor', this).call(this, { tag: 'ol' });
 		this.answeredQuestions = answeredQuestions;
 	}
 
@@ -210,13 +199,12 @@ var List = (function (_Element2) {
   */
 
 	/**
-  * Build list markup 
+  * Build list markup
   */
 
 	_createClass(List, [{
 		key: 'toHTML',
 		value: function toHTML() {
-
 			var listItem;
 
 			// Create the list
@@ -232,8 +220,8 @@ var List = (function (_Element2) {
 					var question = _step2.value;
 
 					listItem = new Element({
-						'tag': 'li',
-						'textNode': question.questionData.instruction[0] + ' ' + question.selectedOption + ' ' + question.questionData.instruction[1]
+						tag: 'li',
+						textNode: question.questionData.instruction[0] + ' ' + question.selectedOption + ' ' + question.questionData.instruction[1]
 					});
 
 					this.element.appendChild(listItem.toHTML());
@@ -267,7 +255,7 @@ var Question = (function (_Element3) {
   * Create an instance of Question
   * @param { object } questionData - contains necessary data to create the question markup
   * @param { string } questionType - used to create the label for the question
-  * @param { function } onSelection - function called when user selects an answer / option 
+  * @param { function } onSelection - function called when user selects an answer / option
   */
 
 	function Question(questionData, questionType, onSelection) {
@@ -275,14 +263,13 @@ var Question = (function (_Element3) {
 
 		// Question containing element will be a div
 		_get(Object.getPrototypeOf(Question.prototype), 'constructor', this).call(this, {
-			'tag': 'label',
-			'attributes': { 'class': 'question' }
+			tag: 'label',
+			attributes: { 'class': 'question' }
 		});
 
 		this.questionData = questionData;
 		this.questionType = questionType;
 		this.onSelection = onSelection;
-
 		this.selectedOption = '';
 	}
 
@@ -297,15 +284,14 @@ var Question = (function (_Element3) {
 	_createClass(Question, [{
 		key: 'toHTML',
 		value: function toHTML() {
-
 			// Create label, span and select
 			var span, select;
 
 			_get(Object.getPrototypeOf(Question.prototype), 'toHTML', this).call(this);
 
 			span = new Element({
-				'tag': 'span',
-				'textNode': this.questionData.questionLabel + ':'
+				tag: 'span',
+				textNode: this.questionData.questionLabel + ':'
 			});
 
 			select = new Select(this.questionData);
@@ -328,12 +314,10 @@ var Question = (function (_Element3) {
 	}, {
 		key: 'answerSelected',
 		value: function answerSelected(evt) {
-
 			var updatedPastChoice = false;
 
 			// Need to know if user updated their choice
 			if (this.selectedOption) {
-
 				updatedPastChoice = true;
 			}
 
@@ -351,7 +335,6 @@ var Question = (function (_Element3) {
 			var translate = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
 
 			if (translate) {
-
 				// Position the element for sliding
 				this.translate('right');
 			}
@@ -368,22 +351,18 @@ var Question = (function (_Element3) {
 	}, {
 		key: 'translate',
 		value: function translate(value) {
-
 			var translate = '';
 
 			switch (value) {
 				case 'reset':
-
 					translate = 'translateX( 0 )';
 					break;
 
 				case 'left':
-
 					translate = 'translateX( calc( -100% - 15px ) )';
 					break;
 
 				case 'right':
-
 					translate = 'translateX( calc( 100% + 15px ) )';
 					break;
 			}
@@ -398,7 +377,6 @@ var Question = (function (_Element3) {
 	}, {
 		key: 'setClass',
 		value: function setClass(value) {
-
 			this.element.setAttribute('class', 'question ' + value);
 		}
 	}]);
@@ -418,7 +396,6 @@ var Instructions = (function (_Element4) {
 		_classCallCheck(this, Instructions);
 
 		_get(Object.getPrototypeOf(Instructions.prototype), 'constructor', this).call(this);
-
 		this.answeredQuestions = answeredQuestions;
 	}
 
@@ -427,13 +404,12 @@ var Instructions = (function (_Element4) {
   */
 
 	/**
-  * Build instructions markup 
+  * Build instructions markup
   */
 
 	_createClass(Instructions, [{
 		key: 'toHTML',
 		value: function toHTML() {
-
 			var title, list;
 
 			// Create the container
@@ -441,8 +417,8 @@ var Instructions = (function (_Element4) {
 
 			// Create the title
 			title = new Element({
-				'tag': 'h2',
-				'textNode': 'To recreate your look...'
+				tag: 'h2',
+				textNode: 'To recreate your look...'
 			});
 
 			this.element.appendChild(title.toHTML());
@@ -470,10 +446,10 @@ var DownloadForm = (function (_Element5) {
 		_classCallCheck(this, DownloadForm);
 
 		_get(Object.getPrototypeOf(DownloadForm.prototype), 'constructor', this).call(this, {
-			'tag': 'form',
-			'attributes': {
-				'method': 'post',
-				'action': 'image.php'
+			tag: 'form',
+			attributes: {
+				method: 'post',
+				action: 'image.php'
 			}
 		});
 
@@ -485,13 +461,12 @@ var DownloadForm = (function (_Element5) {
   */
 
 	/**
-  * Build form markup 
+  * Build form markup
   */
 
 	_createClass(DownloadForm, [{
 		key: 'toHTML',
 		value: function toHTML() {
-
 			var input;
 
 			// Create the container
@@ -509,11 +484,11 @@ var DownloadForm = (function (_Element5) {
 					var image = _step3.value;
 
 					input = new Element({
-						'tag': 'input',
-						'attributes': {
-							'type': 'hidden',
-							'value': image.getAttribute('src'),
-							'name': 'layer[]'
+						tag: 'input',
+						attributes: {
+							type: 'hidden',
+							value: image.getAttribute('src'),
+							name: 'layer[]'
 						}
 					});
 
@@ -535,11 +510,11 @@ var DownloadForm = (function (_Element5) {
 			}
 
 			input = new Element({
-				'tag': 'input',
-				'attributes': {
-					'type': 'submit',
-					'value': 'Download Your Look',
-					'name': 'download'
+				tag: 'input',
+				attributes: {
+					type: 'submit',
+					value: 'Download Your Look',
+					name: 'download'
 				}
 			});
 
@@ -565,11 +540,11 @@ var Button = (function (_Element6) {
 		_classCallCheck(this, Button);
 
 		_get(Object.getPrototypeOf(Button.prototype), 'constructor', this).call(this, {
-			'tag': 'input',
-			'attributes': {
-				'type': 'button',
-				'value': value,
-				'name': value + 'Btn'
+			tag: 'input',
+			attributes: {
+				type: 'button',
+				value: value,
+				name: value + 'Btn'
 			}
 		});
 
@@ -583,12 +558,8 @@ var Button = (function (_Element6) {
 	_createClass(Button, [{
 		key: 'toHTML',
 		value: function toHTML() {
-
 			_get(Object.getPrototypeOf(Button.prototype), 'toHTML', this).call(this);
-
-			// Add the on change event listener
 			this.element.addEventListener('click', this.btnClicked.bind(this), false);
-
 			return this.element;
 		}
 
@@ -598,9 +569,7 @@ var Button = (function (_Element6) {
 	}, {
 		key: 'btnClicked',
 		value: function btnClicked() {
-
 			var next = this.attributes.value === 'next' ? true : false;
-
 			this.onclick(next);
 		}
 
@@ -611,7 +580,6 @@ var Button = (function (_Element6) {
 	}, {
 		key: 'disable',
 		value: function disable(state) {
-
 			this.element.disabled = state;
 		}
 	}]);
@@ -622,6 +590,7 @@ var Button = (function (_Element6) {
 var settings,
     MakeupGenerator = {
 
+	// Initialize the app settings
 	settings: {
 		questions: questionData,
 		displayedQuestions: [],
@@ -661,7 +630,6 @@ var settings,
 
 		// Questions on desktop and all other elements fade in
 		if (!slide) {
-
 			// Timeout needed for animation / transition
 			setTimeout(function () {
 				return object.fadeIn();
@@ -669,13 +637,11 @@ var settings,
 		}
 		// Questions on mobile slide in
 		else {
-
 				// Don't position/translate the first question
 				object.slideIn(!!settings.displayedQuestions.length);
 			}
 
 		if (array) {
-
 			array.push(object);
 		}
 	},
@@ -684,7 +650,6 @@ var settings,
   * Display a question
   */
 	createQuestion: function createQuestion() {
-
 		var questionHolder = document.getElementById('questionHolder'),
 		    question = new Question(settings.questions[this.questionType], this.questionType, this.onSelection.bind(this));
 
@@ -695,13 +660,12 @@ var settings,
   * Display an image
   */
 	createImage: function createImage(selectedOption) {
-
 		var imgHolder = document.getElementById('imgHolder'),
 		    image = new Element({
-			'tag': 'img',
-			'attributes': {
-				'src': 'images/' + selectedOption + '.png',
-				'alt': this.questionType
+			tag: 'img',
+			attributes: {
+				src: 'images/' + selectedOption + '.png',
+				alt: this.questionType
 			}
 		});
 
@@ -712,7 +676,6 @@ var settings,
   * Display list of steps to recreate the look
   */
 	createInstructions: function createInstructions() {
-
 		var instructionsHolder = document.getElementById('instructionsHolder');
 		settings.instructions = new Instructions(settings.displayedQuestions);
 
@@ -723,7 +686,6 @@ var settings,
   * Display the download button
   */
 	createDownloadForm: function createDownloadForm() {
-
 		var formHolder = document.getElementById('formHolder');
 		settings.form = new DownloadForm(document.querySelectorAll('#imgHolder img'));
 
@@ -734,7 +696,6 @@ var settings,
   * Display the next/prev buttons for mobile experience
   */
 	createMobileNav: function createMobileNav() {
-
 		var navHolder = document.getElementById('questionNav');
 		settings.prevBtn = new Button('prev', this.slideInQuestion);
 		settings.nextBtn = new Button('next', this.slideInQuestion);
@@ -750,10 +711,8 @@ var settings,
   * Helper function - remove an array of elements from the page
   */
 	removeArrayOfElements: function removeArrayOfElements(stop, array) {
-
 		// Remove elements starting at the end of the array until reaching the stop point/index
 		for (var i = array.length - 1; i > stop; i--) {
-
 			this.removeSingleElement(array[i]);
 			array.splice(i, 1);
 		}
@@ -763,19 +722,16 @@ var settings,
   * Helper function - remove a single element from the page
   */
 	removeSingleElement: function removeSingleElement(object) {
-
 		if (object) {
-
 			object.removeFromDOM();
 		}
 	},
 
 	/**
-  * Removes any unneeded questions or images, 
+  * Removes any unneeded questions or images,
   * clears out the instructions and download form
   */
 	resetUI: function resetUI(question) {
-
 		var index = settings.displayedQuestions.indexOf(question);
 
 		// Remove unnecessary questions & images
@@ -798,7 +754,6 @@ var settings,
 
 		// If user updated a past choice...
 		if (updatedPastChoice) {
-
 			this.resetUI(question);
 
 			// Reset question type
@@ -818,13 +773,11 @@ var settings,
 
 			// Enable next button for mobile devices
 			if (settings.isMobile) {
-
 				settings.nextBtn.disable(false);
 			}
 		}
 		// No more questions to display
 		else {
-
 				this.createInstructions();
 				this.createDownloadForm();
 			}
@@ -840,7 +793,6 @@ var settings,
   * small screen sizes
   */
 	checkForMobile: function checkForMobile() {
-
 		var prevIsMobile = settings.isMobile;
 
 		// Check screen size
@@ -848,7 +800,6 @@ var settings,
 
 		// Changing between different user experiences
 		if (settings.isMobile !== prevIsMobile) {
-
 			this.changeUserExperience();
 		}
 	},
@@ -858,23 +809,19 @@ var settings,
   * between the mobile and desktop experiences
   */
 	changeUserExperience: function changeUserExperience() {
-
 		var questions = settings.displayedQuestions,
 		    translate = '',
 		    classname = '';
 
 		// Changing from desktop to mobile...
+		// Send user back to first select for simplicity's sake
+		// Disable prev button
+		// Enable next button if there is a next question
 		if (settings.isMobile) {
-
-			// Send user back to first select for simplicity's sake
 			settings.currentQuestionIndex = 0;
-
-			// Disable prev button
 			settings.prevBtn.disable(true);
 
-			// Enable next button if there is a next question
 			if (questions.length > 1) {
-
 				settings.nextBtn.disable(false);
 			}
 
@@ -882,7 +829,6 @@ var settings,
 		}
 		// Changing from mobile to desktop...
 		else {
-
 				translate = 'reset';
 				classname = 'fade';
 			}
@@ -890,10 +836,8 @@ var settings,
 		// Loop through questions
 		// Update styling & transitions
 		for (var i = 0, len = questions.length; i < len; i++) {
-
 			// For mobile, skip over first select when updating position
 			if (!settings.isMobile || settings.isMobile && i > 0) {
-
 				questions[i].translate(translate);
 			}
 
@@ -906,16 +850,13 @@ var settings,
   * Handles sliding in new question / sliding out current question
   */
 	slideInQuestion: function slideInQuestion(next) {
-
 		var translate = '',
 		    increment;
 
 		// Next/Prev buttons are only needed for mobile devices
 		if (settings.isMobile) {
-
 			// User clicked next
 			if (next) {
-
 				translate = 'left';
 				increment = 1;
 
@@ -924,7 +865,6 @@ var settings,
 
 				// Disable the next button when there is no next question
 				if (settings.currentQuestionIndex + increment === settings.displayedQuestions.length - 1) {
-
 					settings.nextBtn.disable(true);
 				}
 			}
@@ -935,7 +875,6 @@ var settings,
 
 					// Disable prev button if we're back to the first question
 					if (settings.currentQuestionIndex + increment === 0) {
-
 						settings.prevBtn.disable(true);
 					}
 
@@ -956,6 +895,5 @@ var settings,
 };
 
 (function () {
-
 	MakeupGenerator.init();
 })();
