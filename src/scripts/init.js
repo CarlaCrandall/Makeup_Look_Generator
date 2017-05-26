@@ -205,7 +205,7 @@ var MakeupGenerator = {
 		var prevIsMobile = this.settings.isMobile;
 
 		// Check screen size
-		this.settings.isMobile = (Number(window.innerWidth) < 768) ? true : false;
+		this.settings.isMobile = Number(window.innerWidth) < 768;
 
 		// Changing between different user experiences
 		if (this.settings.isMobile !== prevIsMobile) {
