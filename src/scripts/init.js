@@ -1,5 +1,4 @@
-var settings,
-	MakeupGenerator = {
+var MakeupGenerator = {
 
 	// Initialize the app settings
 	settings: {
@@ -19,8 +18,6 @@ var settings,
 	 * Initial app setup
 	 */
 	init: function() {
-		settings = this.settings;
-
 		this.checkForMobile();
 		this.createMobileNav();
 
@@ -46,7 +43,7 @@ var settings,
 		// Questions on mobile slide in
 		else {
 			// Don't position/translate the first question
-			object.slideIn(!!settings.displayedQuestions.length);
+			object.slideIn(!!this.settings.displayedQuestions.length);
 		}
 
 		if (array) {
@@ -59,9 +56,9 @@ var settings,
 	 */
 	createQuestion: function() {
 		var questionHolder = document.getElementById('questionHolder'),
-			question = new Question(settings.questions[this.questionType], this.questionType, this.onSelection.bind(this));
+			question = new Question(this.settings.questions[this.questionType], this.questionType, this.onSelection.bind(this));
 
-		this.displayElement(questionHolder, question, settings.displayedQuestions, settings.isMobile);
+		this.displayElement(questionHolder, question, this.settings.displayedQuestions, this.settings.isMobile);
 	},
 
 	/**
@@ -77,7 +74,7 @@ var settings,
 				}
 			});
 
-		this.displayElement(imgHolder, image, settings.images);
+		this.displayElement(imgHolder, image, this.settings.images);
 	},
 
 	/**
@@ -85,9 +82,9 @@ var settings,
 	 */
 	createInstructions: function() {
 		var instructionsHolder = document.getElementById('instructionsHolder');
-			settings.instructions = new Instructions(settings.displayedQuestions);
+			this.settings.instructions = new Instructions(this.settings.displayedQuestions);
 
-		this.displayElement(instructionsHolder, settings.instructions);
+		this.displayElement(instructionsHolder, this.settings.instructions);
 	},
 
 	/**
@@ -95,9 +92,9 @@ var settings,
 	 */
 	createDownloadForm: function() {
 		var formHolder = document.getElementById('formHolder');
-			settings.form = new DownloadForm(document.querySelectorAll('#imgHolder img'));
+			this.settings.form = new DownloadForm(document.querySelectorAll('#imgHolder img'));
 
-		this.displayElement(formHolder, settings.form);
+		this.displayElement(formHolder, this.settings.form);
 	},
 
 	/**
@@ -105,14 +102,14 @@ var settings,
 	 */
 	createMobileNav: function() {
 		var navHolder = document.getElementById('questionNav');
-			settings.prevBtn = new Button('prev', this.slideInQuestion);
-			settings.nextBtn = new Button('next', this.slideInQuestion);
+			this.settings.prevBtn = new Button('prev', this.slideInQuestion);
+			this.settings.nextBtn = new Button('next', this.slideInQuestion);
 
-		this.displayElement(navHolder, settings.prevBtn);
-		this.displayElement(navHolder, settings.nextBtn);
+		this.displayElement(navHolder, this.settings.prevBtn);
+		this.displayElement(navHolder, this.settings.nextBtn);
 
-		settings.prevBtn.disable(true);
-		settings.nextBtn.disable(true);
+		this.settings.prevBtn.disable(true);
+		this.settings.nextBtn.disable(true);
 	},
 
 	/**
@@ -140,19 +137,19 @@ var settings,
 	 * clears out the instructions and download form
 	 */
 	resetUI: function(question) {
-		var index = settings.displayedQuestions.indexOf(question);
+		var index = this.settings.displayedQuestions.indexOf(question);
 
 		// Remove unnecessary questions & images
-		this.removeArrayOfElements(index, settings.displayedQuestions);
-		this.removeArrayOfElements(index - 1, settings.images);
+		this.removeArrayOfElements(index, this.settings.displayedQuestions);
+		this.removeArrayOfElements(index - 1, this.settings.images);
 
 		// Remove instructions
-		this.removeSingleElement(settings.instructions);
-		settings.instructions = null;
+		this.removeSingleElement(this.settings.instructions);
+		this.settings.instructions = null;
 
 		// Remove form
-		this.removeSingleElement(settings.form);
-		settings.form = null;
+		this.removeSingleElement(this.settings.form);
+		this.settings.form = null;
 	},
 
 	/**
@@ -171,7 +168,7 @@ var settings,
 		// Display image
 		this.createImage(selectedOption);
 
-		this.questionType = settings.questions[this.questionType].nextType;
+		this.questionType = this.settings.questions[this.questionType].nextType;
 
 		// Still more questions...
 		if (this.questionType) {
@@ -180,8 +177,8 @@ var settings,
 			this.createQuestion();
 
 			// Enable next button for mobile devices
-			if (settings.isMobile) {
-				settings.nextBtn.disable(false);
+			if (this.settings.isMobile) {
+				this.settings.nextBtn.disable(false);
 			}
 		}
 		// No more questions to display
@@ -205,13 +202,13 @@ var settings,
 	 * small screen sizes
 	 */
 	checkForMobile: function() {
-		var prevIsMobile = settings.isMobile;
+		var prevIsMobile = this.settings.isMobile;
 
 		// Check screen size
-		settings.isMobile = (Number(window.innerWidth) < 768) ? true : false;
+		this.settings.isMobile = (Number(window.innerWidth) < 768) ? true : false;
 
 		// Changing between different user experiences
-		if (settings.isMobile !== prevIsMobile) {
+		if (this.settings.isMobile !== prevIsMobile) {
 			this.changeUserExperience();
 		}
 	},
@@ -221,7 +218,7 @@ var settings,
 	 * between the mobile and desktop experiences
 	 */
 	changeUserExperience: function() {
-		var questions = settings.displayedQuestions,
+		var questions = this.settings.displayedQuestions,
 			translate = '',
 			classname = '';
 
@@ -230,12 +227,12 @@ var settings,
 		// Send user back to first select for simplicity's sake
 		// Disable prev button
 		// Enable next button if there is a next question
-		if (settings.isMobile) {
-			settings.currentQuestionIndex = 0;
-			settings.prevBtn.disable( true );
+		if (this.settings.isMobile) {
+			this.settings.currentQuestionIndex = 0;
+			this.settings.prevBtn.disable( true );
 
 			if (questions.length > 1) {
-				settings.nextBtn.disable( false );
+				this.settings.nextBtn.disable( false );
 			}
 
 			translate = 'right';
@@ -250,7 +247,7 @@ var settings,
 		// Update styling & transitions
 		for (let i = 0, len = questions.length; i < len; i++) {
 			// For mobile, skip over first select when updating position
-			if (!settings.isMobile || (settings.isMobile && i > 0)) {
+			if (!this.settings.isMobile || (this.settings.isMobile && i > 0)) {
 				questions[i].translate(translate);
 			}
 
@@ -267,18 +264,18 @@ var settings,
 			increment;
 
 		// Next/Prev buttons are only needed for mobile devices
-		if (settings.isMobile) {
+		if (this.settings.isMobile) {
 			// User clicked next
 			if (next) {
 				translate = 'left';
 				increment = 1;
 
 				// Enable the prev button
-				settings.prevBtn.disable(false);
+				this.settings.prevBtn.disable(false);
 
 				// Disable the next button when there is no next question
-				if (settings.currentQuestionIndex + increment === settings.displayedQuestions.length - 1) {
-					settings.nextBtn.disable(true);
+				if (this.settings.currentQuestionIndex + increment === this.settings.displayedQuestions.length - 1) {
+					this.settings.nextBtn.disable(true);
 				}
 			}
 			// User clicked prev
@@ -287,18 +284,18 @@ var settings,
 				increment = -1;
 
 				// Disable prev button if we're back to the first question
-				if (settings.currentQuestionIndex + increment === 0) {
-					settings.prevBtn.disable(true);
+				if (this.settings.currentQuestionIndex + increment === 0) {
+					this.settings.prevBtn.disable(true);
 				}
 
 				// Enable the next button
-				settings.nextBtn.disable(false);
+				this.settings.nextBtn.disable(false);
 			}
 
 			// Slide out current question,  Update index, Slide in next question
-			settings.displayedQuestions[settings.currentQuestionIndex].translate(translate);
-			settings.currentQuestionIndex = settings.currentQuestionIndex + increment;
-			settings.displayedQuestions[settings.currentQuestionIndex].translate('reset');
+			this.settings.displayedQuestions[this.settings.currentQuestionIndex].translate(translate);
+			this.settings.currentQuestionIndex = this.settings.currentQuestionIndex + increment;
+			this.settings.displayedQuestions[this.settings.currentQuestionIndex].translate('reset');
 		}
 
 		// Do nothing if not mobile
