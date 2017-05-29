@@ -1,7 +1,7 @@
 var MakeupGenerator = {
 
-	// Initialize the app settings
-	settings: {
+	// Initialize the app state
+	state: {
 		questions: questionData,
 		displayedQuestions: [],
 		images: [],
@@ -10,6 +10,7 @@ var MakeupGenerator = {
 		prevBtn: null,
 		nextBtn: null,
 		isMobile: true,
+		currentQuestion: 'lid',
 		currentQuestionIndex: 0
 	},
 
@@ -22,10 +23,9 @@ var MakeupGenerator = {
 		this.createMobileNav();
 
 		// Bind window resize event
-		window.addEventListener('resize', this.checkForMobile.bind(this), true);
+		window.addEventListener('resize', () => this.checkForMobile(), true);
 
 		// Display initial question
-		this.questionType = 'lid';
 		this.createQuestion();
 	},
 
@@ -43,7 +43,7 @@ var MakeupGenerator = {
 		// Questions on mobile slide in
 		else {
 			// Don't position/translate the first question
-			object.slideIn(!!this.settings.displayedQuestions.length);
+			object.slideIn(!!this.state.displayedQuestions.length);
 		}
 
 		if (array) {
@@ -55,61 +55,62 @@ var MakeupGenerator = {
 	 * Display a question
 	 */
 	createQuestion: function() {
-		var questionHolder = document.getElementById('questionHolder'),
-			question = new Question(this.settings.questions[this.questionType], this.questionType, this.onSelection.bind(this));
+		const
+			questionHolder = document.getElementById('questionHolder'),
+			question = new Question(this.state.questions[this.state.currentQuestion], this.state.currentQuestion, this.onSelection.bind(this));
 
-		this.displayElement(questionHolder, question, this.settings.displayedQuestions, this.settings.isMobile);
+		this.displayElement(questionHolder, question, this.state.displayedQuestions, this.state.isMobile);
 	},
 
 	/**
 	 * Display an image
 	 */
 	createImage: function(selectedOption) {
-		var imgHolder = document.getElementById('imgHolder'),
+		const
+			imgHolder = document.getElementById('imgHolder'),
 			image = new Element({
 				tag: 'img',
 				attributes: {
-					src: `images/${ selectedOption }.png`,
-					alt: this.questionType
+					src: `images/${selectedOption}.png`,
+					alt: this.state.currentQuestion
 				}
 			});
 
-		this.displayElement(imgHolder, image, this.settings.images);
+		this.displayElement(imgHolder, image, this.state.images);
 	},
 
 	/**
 	 * Display list of steps to recreate the look
 	 */
 	createInstructions: function() {
-		var instructionsHolder = document.getElementById('instructionsHolder');
-			this.settings.instructions = new Instructions(this.settings.displayedQuestions);
-
-		this.displayElement(instructionsHolder, this.settings.instructions);
+		const instructionsHolder = document.getElementById('instructionsHolder');
+		this.state.instructions = new Instructions(this.state.displayedQuestions);
+		this.displayElement(instructionsHolder, this.state.instructions);
 	},
 
 	/**
 	 * Display the download button
 	 */
 	createDownloadForm: function() {
-		var formHolder = document.getElementById('formHolder');
-			this.settings.form = new DownloadForm(document.querySelectorAll('#imgHolder img'));
-
-		this.displayElement(formHolder, this.settings.form);
+		const formHolder = document.getElementById('formHolder');
+		this.state.form = new DownloadForm(document.querySelectorAll('#imgHolder img'));
+		this.displayElement(formHolder, this.state.form);
 	},
 
 	/**
 	 * Display the next/prev buttons for mobile experience
 	 */
 	createMobileNav: function() {
-		var navHolder = document.getElementById('questionNav');
-			this.settings.prevBtn = new Button('prev', () => this.slideInQuestion(false));
-			this.settings.nextBtn = new Button('next', () => this.slideInQuestion(true));
+		const navHolder = document.getElementById('questionNav');
 
-		this.displayElement(navHolder, this.settings.prevBtn);
-		this.displayElement(navHolder, this.settings.nextBtn);
+		this.state.prevBtn = new Button('prev', () => this.slideInQuestion(false));
+		this.state.nextBtn = new Button('next', () => this.slideInQuestion(true));
 
-		this.settings.prevBtn.disable(true);
-		this.settings.nextBtn.disable(true);
+		this.displayElement(navHolder, this.state.prevBtn);
+		this.displayElement(navHolder, this.state.nextBtn);
+
+		this.state.prevBtn.disable(true);
+		this.state.nextBtn.disable(true);
 	},
 
 	/**
@@ -118,17 +119,20 @@ var MakeupGenerator = {
 	removeArrayOfElements: function(stop, array) {
 		// Remove elements starting at the end of the array until reaching the stop point/index
 		for (let i = array.length - 1; i > stop; i--) {
-			this.removeSingleElement(array[i]);
+			array[i].removeFromDOM();
 			array.splice(i, 1);
 		}
 	},
 
 	/**
-	 * Helper function - remove a single element from the page
+	 * Helper function
+	 * Remove a single element from the page
+	 * Reset reference to element in the state
 	 */
-	removeSingleElement: function(object) {
-		if (object) {
-			object.removeFromDOM();
+	removeSingleElement: function(element) {
+		if (this.state[element]) {
+			this.state[element].removeFromDOM();
+			this.state[element] = null;
 		}
 	},
 
@@ -137,48 +141,37 @@ var MakeupGenerator = {
 	 * clears out the instructions and download form
 	 */
 	resetUI: function(question) {
-		var index = this.settings.displayedQuestions.indexOf(question);
+		const index = this.state.displayedQuestions.indexOf(question);
 
-		// Remove unnecessary questions & images
-		this.removeArrayOfElements(index, this.settings.displayedQuestions);
-		this.removeArrayOfElements(index - 1, this.settings.images);
-
-		// Remove instructions
-		this.removeSingleElement(this.settings.instructions);
-		this.settings.instructions = null;
-
-		// Remove form
-		this.removeSingleElement(this.settings.form);
-		this.settings.form = null;
+		// Remove elements from page
+		this.removeArrayOfElements(index, this.state.displayedQuestions);
+		this.removeArrayOfElements(index - 1, this.state.images);
+		this.removeSingleElement('instructions');
+		this.removeSingleElement('form');
 	},
 
 	/**
 	 * Triggered when user answers a question
 	 */
-	onSelection: function(selectedOption, updatedPastChoice, question) {
-
-		// If user updated a past choice...
+	onSelection: function(question, updatedPastChoice) {
+		// If user updated a past choice, reset UI and question
 		if (updatedPastChoice) {
 			this.resetUI(question);
-
-			// Reset question type
-			this.questionType = question.questionType;
+			this.state.currentQuestion = question.questionType;
 		}
 
 		// Display image
-		this.createImage(selectedOption);
+		this.createImage(question.selectedOption);
 
-		this.questionType = this.settings.questions[this.questionType].nextType;
+		this.state.currentQuestion = this.state.questions[this.state.currentQuestion].nextType;
 
-		// Still more questions...
-		if (this.questionType) {
-
-			// Display next question
+		// Display the next question
+		if (this.state.currentQuestion) {
 			this.createQuestion();
 
 			// Enable next button for mobile devices
-			if (this.settings.isMobile) {
-				this.settings.nextBtn.disable(false);
+			if (this.state.isMobile) {
+				this.state.nextBtn.disable(false);
 			}
 		}
 		// No more questions to display
@@ -197,18 +190,18 @@ var MakeupGenerator = {
 	-------------------------------------------------------------------*/
 
 	/**
-	 * Sets settings.isMobile based on window size, so we
+	 * Sets state.isMobile based on window size, so we
 	 * can create a different experience for mobile devices /
 	 * small screen sizes
 	 */
 	checkForMobile: function() {
-		var prevIsMobile = this.settings.isMobile;
+		const prevIsMobile = this.state.isMobile;
 
 		// Check screen size
-		this.settings.isMobile = Number(window.innerWidth) < 768;
+		this.state.isMobile = Number(window.innerWidth) < 768;
 
 		// Changing between different user experiences
-		if (this.settings.isMobile !== prevIsMobile) {
+		if (this.state.isMobile !== prevIsMobile) {
 			this.changeUserExperience();
 		}
 	},
@@ -218,21 +211,21 @@ var MakeupGenerator = {
 	 * between the mobile and desktop experiences
 	 */
 	changeUserExperience: function() {
-		var questions = this.settings.displayedQuestions,
-			translate = '',
-			classname = '';
+		const questions = this.state.displayedQuestions;
 
+		let translate = '',
+			classname = '';
 
 		// Changing from desktop to mobile...
 		// Send user back to first select for simplicity's sake
 		// Disable prev button
 		// Enable next button if there is a next question
-		if (this.settings.isMobile) {
-			this.settings.currentQuestionIndex = 0;
-			this.settings.prevBtn.disable( true );
+		if (this.state.isMobile) {
+			this.state.currentQuestionIndex = 0;
+			this.state.prevBtn.disable(true);
 
 			if (questions.length > 1) {
-				this.settings.nextBtn.disable( false );
+				this.state.nextBtn.disable(false);
 			}
 
 			translate = 'right';
@@ -247,7 +240,7 @@ var MakeupGenerator = {
 		// Update styling & transitions
 		for (let i = 0, len = questions.length; i < len; i++) {
 			// For mobile, skip over first select when updating position
-			if (!this.settings.isMobile || (this.settings.isMobile && i > 0)) {
+			if (!this.state.isMobile || (this.state.isMobile && i > 0)) {
 				questions[i].translate(translate);
 			}
 
@@ -260,22 +253,22 @@ var MakeupGenerator = {
 	 * Handles sliding in new question / sliding out current question
 	 */
 	slideInQuestion: function(next) {
-		var translate = '',
+		let translate = '',
 			increment;
 
 		// Next/Prev buttons are only needed for mobile devices
-		if (this.settings.isMobile) {
+		if (this.state.isMobile) {
 			// User clicked next
 			if (next) {
 				translate = 'left';
 				increment = 1;
 
 				// Enable the prev button
-				this.settings.prevBtn.disable(false);
+				this.state.prevBtn.disable(false);
 
 				// Disable the next button when there is no next question
-				if (this.settings.currentQuestionIndex + increment === this.settings.displayedQuestions.length - 1) {
-					this.settings.nextBtn.disable(true);
+				if (this.state.currentQuestionIndex + increment === this.state.displayedQuestions.length - 1) {
+					this.state.nextBtn.disable(true);
 				}
 			}
 			// User clicked prev
@@ -284,18 +277,18 @@ var MakeupGenerator = {
 				increment = -1;
 
 				// Disable prev button if we're back to the first question
-				if (this.settings.currentQuestionIndex + increment === 0) {
-					this.settings.prevBtn.disable(true);
+				if (this.state.currentQuestionIndex + increment === 0) {
+					this.state.prevBtn.disable(true);
 				}
 
 				// Enable the next button
-				this.settings.nextBtn.disable(false);
+				this.state.nextBtn.disable(false);
 			}
 
 			// Slide out current question,  Update index, Slide in next question
-			this.settings.displayedQuestions[this.settings.currentQuestionIndex].translate(translate);
-			this.settings.currentQuestionIndex = this.settings.currentQuestionIndex + increment;
-			this.settings.displayedQuestions[this.settings.currentQuestionIndex].translate('reset');
+			this.state.displayedQuestions[this.state.currentQuestionIndex].translate(translate);
+			this.state.currentQuestionIndex = this.state.currentQuestionIndex + increment;
+			this.state.displayedQuestions[this.state.currentQuestionIndex].translate('reset');
 		}
 
 		// Do nothing if not mobile
