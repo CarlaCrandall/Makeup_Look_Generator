@@ -16,14 +16,11 @@ class Select extends Element {
 	 * Build select markup
 	 */
 	toHTML() {
-		var option,
-			nameCap = '';
-
 		// Create the select
 		super.toHTML();
 
-		// Create the first Option (question text)
-		option = new Element({
+		// Create the first option (question text)
+		let option = new Element({
 			tag: 'option',
 			attributes: {
 				disabled: 'disabled',
@@ -34,18 +31,16 @@ class Select extends Element {
 
 		this.element.appendChild(option.toHTML());
 
-		// Create the other Options (question choices)
-		for (let choice of this.questionData.choices) {
-			nameCap = choice.charAt(0).toUpperCase() + choice.slice(1);
-
+		// Create the other options (question choices)
+		this.questionData.choices.forEach((choice) => {
 			option = new Element({
 				tag: 'option',
 				attributes: { value: choice },
-				textNode: nameCap
+				textNode: choice.charAt(0).toUpperCase() + choice.slice(1)
 			});
 
 			this.element.appendChild(option.toHTML());
-		}
+		});
 
 		return this.element;
 	}

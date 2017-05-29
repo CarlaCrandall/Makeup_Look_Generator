@@ -26,25 +26,21 @@ class Question extends Element {
 	 * Build question markup
 	 */
 	toHTML() {
-		// Create label, span and select
-		var span,
-			select;
-
 		super.toHTML();
 
-		span = new Element({
+		let span = new Element({
 			tag: 'span',
 			textNode: `${this.questionData.questionLabel}:`
 		});
 
-		select = new Select(this.questionData);
+		let select = new Select(this.questionData);
 
-		// Create question container, append necessary elements
+		// Create question container and append elements
 		this.element.appendChild(span.toHTML());
 		this.element.appendChild(select.toHTML());
 
 		// Add the on change event listener
-		this.element.addEventListener('change', this.answerSelected.bind(this), false);
+		this.element.addEventListener('change', (event) => this.answerSelected(event), false);
 
 		return this.element;
 	}
@@ -54,25 +50,21 @@ class Question extends Element {
 	 * Save answer and call callback function
 	 * @param { event } evt - the onchange event
 	 */
-	answerSelected(evt) {
-		var updatedPastChoice = false;
-
-		// Need to know if user updated their choice
-		if (this.selectedOption) {
-			updatedPastChoice = true;
-		}
+	answerSelected(event) {
+		// Need to know if user updated their previous choice
+		var updatedPastChoice = (this.selectedOption) ? true : false;
 
 		// Save user's choice
-		this.selectedOption = evt.target.value;
-		this.onSelection(this.selectedOption, updatedPastChoice, this);
+		this.selectedOption = event.target.value;
+		this.onSelection(this, updatedPastChoice);
 	}
 
 	/**
 	 * Slide question in - for mobile devices
 	 */
 	slideIn(translate = false) {
+		// Position the element for sliding
 		if (translate) {
-			// Position the element for sliding
 			this.translate('right');
 		}
 
