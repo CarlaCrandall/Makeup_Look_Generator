@@ -14,6 +14,14 @@ var MakeupGenerator = {
 		currentQuestionIndex: 0
 	},
 
+	refs: {
+		questionHolder: document.getElementById('questionHolder'),
+		imgHolder: document.getElementById('imgHolder'),
+		instructionsHolder: document.getElementById('instructionsHolder'),
+		formHolder: document.getElementById('formHolder'),
+		navHolder: document.getElementById('questionNav')
+	},
+
 
 	/**
 	 * Initial app setup
@@ -55,59 +63,50 @@ var MakeupGenerator = {
 	 * Display a question
 	 */
 	createQuestion: function() {
-		const
-			questionHolder = document.getElementById('questionHolder'),
-			question = new Question(this.state.questions[this.state.currentQuestion], this.state.currentQuestion, this.onSelection.bind(this));
-
-		this.displayElement(questionHolder, question, this.state.displayedQuestions, this.state.isMobile);
+		const question = new Question(this.state.questions[this.state.currentQuestion], this.state.currentQuestion, this.onSelection.bind(this));
+		this.displayElement(this.refs.questionHolder, question, this.state.displayedQuestions, this.state.isMobile);
 	},
 
 	/**
 	 * Display an image
 	 */
 	createImage: function(selectedOption) {
-		const
-			imgHolder = document.getElementById('imgHolder'),
-			image = new Element({
-				tag: 'img',
-				attributes: {
-					src: `images/${selectedOption}.png`,
-					alt: this.state.currentQuestion
-				}
-			});
+		const image = new Element({
+			tag: 'img',
+			attributes: {
+				src: `images/${selectedOption}.png`,
+				alt: this.state.currentQuestion
+			}
+		});
 
-		this.displayElement(imgHolder, image, this.state.images);
+		this.displayElement(this.refs.imgHolder, image, this.state.images);
 	},
 
 	/**
 	 * Display list of steps to recreate the look
 	 */
 	createInstructions: function() {
-		const instructionsHolder = document.getElementById('instructionsHolder');
 		this.state.instructions = new Instructions(this.state.displayedQuestions);
-		this.displayElement(instructionsHolder, this.state.instructions);
+		this.displayElement(this.refs.instructionsHolder, this.state.instructions);
 	},
 
 	/**
 	 * Display the download button
 	 */
 	createDownloadForm: function() {
-		const formHolder = document.getElementById('formHolder');
 		this.state.form = new DownloadForm(document.querySelectorAll('#imgHolder img'));
-		this.displayElement(formHolder, this.state.form);
+		this.displayElement(this.refs.formHolder, this.state.form);
 	},
 
 	/**
 	 * Display the next/prev buttons for mobile experience
 	 */
 	createMobileNav: function() {
-		const navHolder = document.getElementById('questionNav');
-
 		this.state.prevBtn = new Button('prev', () => this.slideInQuestion(false));
 		this.state.nextBtn = new Button('next', () => this.slideInQuestion(true));
 
-		this.displayElement(navHolder, this.state.prevBtn);
-		this.displayElement(navHolder, this.state.nextBtn);
+		this.displayElement(this.refs.navHolder, this.state.prevBtn);
+		this.displayElement(this.refs.navHolder, this.state.nextBtn);
 
 		this.state.prevBtn.disable(true);
 		this.state.nextBtn.disable(true);
@@ -236,8 +235,7 @@ var MakeupGenerator = {
 			classname = 'fade';
 		}
 
-		// Loop through questions
-		// Update styling & transitions
+		// Loop through questions, update styling & transitions
 		for (let i = 0, len = questions.length; i < len; i++) {
 			// For mobile, skip over first select when updating position
 			if (!this.state.isMobile || (this.state.isMobile && i > 0)) {
@@ -257,42 +255,41 @@ var MakeupGenerator = {
 			increment;
 
 		// Next/Prev buttons are only needed for mobile devices
-		if (this.state.isMobile) {
-			// User clicked next
-			if (next) {
-				translate = 'left';
-				increment = 1;
-
-				// Enable the prev button
-				this.state.prevBtn.disable(false);
-
-				// Disable the next button when there is no next question
-				if (this.state.currentQuestionIndex + increment === this.state.displayedQuestions.length - 1) {
-					this.state.nextBtn.disable(true);
-				}
-			}
-			// User clicked prev
-			else {
-				translate = 'right';
-				increment = -1;
-
-				// Disable prev button if we're back to the first question
-				if (this.state.currentQuestionIndex + increment === 0) {
-					this.state.prevBtn.disable(true);
-				}
-
-				// Enable the next button
-				this.state.nextBtn.disable(false);
-			}
-
-			// Slide out current question,  Update index, Slide in next question
-			this.state.displayedQuestions[this.state.currentQuestionIndex].translate(translate);
-			this.state.currentQuestionIndex = this.state.currentQuestionIndex + increment;
-			this.state.displayedQuestions[this.state.currentQuestionIndex].translate('reset');
+		if (!this.state.isMobile) {
+			return false;
 		}
 
-		// Do nothing if not mobile
-		return false;
+		// User clicked next
+		if (next) {
+			translate = 'left';
+			increment = 1;
+
+			// Enable the prev button
+			this.state.prevBtn.disable(false);
+
+			// Disable the next button when there is no next question
+			if (this.state.currentQuestionIndex + increment === this.state.displayedQuestions.length - 1) {
+				this.state.nextBtn.disable(true);
+			}
+		}
+		// User clicked prev
+		else {
+			translate = 'right';
+			increment = -1;
+
+			// Disable prev button if we're back to the first question
+			if (this.state.currentQuestionIndex + increment === 0) {
+				this.state.prevBtn.disable(true);
+			}
+
+			// Enable the next button
+			this.state.nextBtn.disable(false);
+		}
+
+		// Slide out current question,  Update index, Slide in next question
+		this.state.displayedQuestions[this.state.currentQuestionIndex].translate(translate);
+		this.state.currentQuestionIndex = this.state.currentQuestionIndex + increment;
+		this.state.displayedQuestions[this.state.currentQuestionIndex].translate('reset');
 	}
 
 };
