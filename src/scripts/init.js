@@ -2,7 +2,7 @@ const MakeupGenerator = {
 
     // Initialize the app state
     state: {
-        questions: questionData,
+        questions: JSON.parse(JSON.stringify(questionData)),
         displayedQuestions: [],
         images: [],
         instructions: null,
