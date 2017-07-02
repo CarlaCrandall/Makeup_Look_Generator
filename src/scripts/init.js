@@ -10,8 +10,8 @@ const MakeupGenerator = {
         prevBtn: null,
         nextBtn: null,
         isMobile: true,
-        currentQuestion: 'lid',
-        currentQuestionIndex: 0
+        currentQuestionIndex: 0,
+        displayedQuestionIndex: 0
     },
 
     refs: {
@@ -61,7 +61,7 @@ const MakeupGenerator = {
      * Display a question
      */
     createQuestion: function() {
-        const question = new Question(this.state.questions[this.state.currentQuestion], this.state.currentQuestion, this.onSelection.bind(this));
+        const question = new Question(this.state.questions[this.state.currentQuestionIndex], this.onSelection.bind(this));
 
         this.displayElement(this.refs.questionHolder, question, this.state.displayedQuestions, this.state.isMobile);
     },
@@ -70,13 +70,15 @@ const MakeupGenerator = {
      * Display an image
      */
     createImage: function(selectedOption) {
-        const image = new Element({
-            tag: 'img',
-            attributes: {
-                src: `images/${selectedOption}.png`,
-                alt: this.state.currentQuestion
-            }
-        });
+        const
+            questionLabel = this.state.questions[this.state.currentQuestionIndex].questionLabel,
+            image = new Element({
+                tag: 'img',
+                attributes: {
+                    src: `images/${selectedOption}.png`,
+                    alt: `${selectedOption} ${questionLabel}`
+                }
+            });
 
         this.displayElement(this.refs.imgHolder, image, this.state.images);
     },
@@ -154,17 +156,20 @@ const MakeupGenerator = {
     onSelection: function(question, updatedPastChoice) {
         // If user updated a past choice, reset UI and question
         if (updatedPastChoice) {
+            const index = this.state.questions.indexOf(question.questionData);
+
             this.resetUI(question);
-            this.state.currentQuestion = question.questionType;
+            this.state.currentQuestionIndex = index;
         }
 
         // Display image
         this.createImage(question.selectedOption);
 
-        this.state.currentQuestion = this.state.questions[this.state.currentQuestion].nextType;
+        this.state.currentQuestionIndex++;
+        this.state.currentQuestion = this.state.questions[this.state.currentQuestionIndex];
 
         // Display the next question
-        if (this.state.currentQuestion) {
+        if (this.state.questions[this.state.currentQuestionIndex]) {
             this.createQuestion();
 
             // Enable next button for mobile devices
@@ -218,6 +223,7 @@ const MakeupGenerator = {
         // Enable next button if there is a next question
         if (this.state.isMobile) {
             this.state.currentQuestionIndex = 0;
+            this.state.displayedQuestionIndex = 0;
             this.state.prevBtn.disable(true);
 
             if (questions.length > 1) {
@@ -248,8 +254,11 @@ const MakeupGenerator = {
      * Handles sliding in new question / sliding out current question
      */
     slideInQuestion: function(next) {
-        let translate = '',
-            increment;
+        let translate,
+            increment,
+            limit,
+            enable,
+            disable;
 
         // Next/Prev buttons are only needed for mobile devices
         if (!this.state.isMobile) {
@@ -260,33 +269,34 @@ const MakeupGenerator = {
         if (next) {
             translate = 'left';
             increment = 1;
-
-            // Enable the prev button
-            this.state.prevBtn.disable(false);
+            enable = 'prevBtn';
+            disable = 'nextBtn';
 
             // Disable the next button when there is no next question
-            if (this.state.currentQuestionIndex + increment === this.state.displayedQuestions.length - 1) {
-                this.state.nextBtn.disable(true);
-            }
+            limit = this.state.displayedQuestions.length - 1;
         }
         // User clicked prev
         else {
             translate = 'right';
             increment = -1;
+            enable = 'nextBtn';
+            disable = 'prevBtn';
 
             // Disable prev button if we're back to the first question
-            if (this.state.currentQuestionIndex + increment === 0) {
-                this.state.prevBtn.disable(true);
-            }
+            limit = 0;
+        }
 
-            // Enable the next button
-            this.state.nextBtn.disable(false);
+        // Update button states
+        this.state[enable].disable(false);
+
+        if (this.state.displayedQuestionIndex + increment === limit) {
+            this.state[disable].disable(true);
         }
 
         // Slide out current question,  Update index, Slide in next question
-        this.state.displayedQuestions[this.state.currentQuestionIndex].translate(translate);
-        this.state.currentQuestionIndex = this.state.currentQuestionIndex + increment;
-        this.state.displayedQuestions[this.state.currentQuestionIndex].translate('reset');
+        this.state.displayedQuestions[this.state.displayedQuestionIndex].translate(translate);
+        this.state.displayedQuestionIndex = this.state.displayedQuestionIndex + increment;
+        this.state.displayedQuestions[this.state.displayedQuestionIndex].translate('reset');
     }
 };
 

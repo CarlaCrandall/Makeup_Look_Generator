@@ -6,10 +6,9 @@ class Question extends Element {
     /**
      * Create an instance of Question
      * @param { object } questionData - contains necessary data to create the question markup
-     * @param { string } questionType - used to create the label for the question
      * @param { function } onSelection - function called when user selects an answer / option
      */
-    constructor(questionData, questionType, onSelection) {
+    constructor(questionData, onSelection) {
         // Question containing element will be a div
         super({
             tag: 'label',
@@ -17,7 +16,6 @@ class Question extends Element {
         });
 
         this.questionData = questionData;
-        this.questionType = questionType;
         this.onSelection = onSelection;
         this.selectedOption = '';
     }
