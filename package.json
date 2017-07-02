@@ -2,7 +2,10 @@
   "name": "makeup-look-generator",
   "version": "0.1.0",
   "devDependencies": {
+    "babel-jest": "^20.0.3",
     "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "eslint": "^3.19.0",
     "grunt": "^1.0.1",
     "grunt-babel": "^6.0.0",
@@ -10,6 +13,20 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
+    "jest": "^20.0.4",
     "load-grunt-tasks": "^3.5.2"
+  },
+  "scripts": {
+    "test": "jest",
+    "test-coverage": "jest --coverage"
+  },
+  "jest": {
+    "clearMocks": true,
+    "resetMocks": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js}",
+      "!**/node_modules/**"
+    ],
+    "setupTestFrameworkScriptFile": "./jest/setup.js"
   }
 }
