@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "devDependencies": {
     "babel-polyfill": "^6.23.0",
+    "eslint": "^3.19.0",
     "grunt": "^1.0.1",
     "grunt-babel": "^6.0.0",
     "grunt-contrib-concat": "^1.0.1",
