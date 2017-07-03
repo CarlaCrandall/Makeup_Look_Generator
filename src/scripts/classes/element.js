@@ -2,7 +2,7 @@
  * Element Class
  * Extended by Button, DownloadForm, Instructions, List, Question, and Select classes
  */
-class Element {
+window.Element = class Element {
 
     /**
      * Create an instance of Element
@@ -23,7 +23,7 @@ class Element {
      */
     toHTML() {
         // Create the element
-        this.element = document.createElement( this.tag );
+        this.element = document.createElement(this.tag);
 
         // Add any attributes
         if (this.attributes) {
@@ -60,4 +60,4 @@ class Element {
     removeFromDOM() {
         this.element.parentNode.removeChild(this.element);
     }
-}
+};

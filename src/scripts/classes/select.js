@@ -1,7 +1,7 @@
 /**
  * Select Class - Inherits from Element
  */
-class Select extends Element {
+window.Select = class Select extends Element {
 
     /**
      * Create an instance of Select
@@ -44,4 +44,4 @@ class Select extends Element {
 
         return this.element;
     }
-}
+};

@@ -1,7 +1,7 @@
 /**
  * Button Class - Inherits from Element
  */
-class Button extends Element {
+window.Button = class Button extends Element {
 
     /**
      * Create an instance of Button
@@ -37,4 +37,4 @@ class Button extends Element {
     disable(state) {
         this.element.disabled = state;
     }
-}
+};

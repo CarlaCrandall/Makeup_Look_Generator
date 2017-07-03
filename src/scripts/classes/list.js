@@ -1,7 +1,7 @@
 /**
  * List Class - Inherits from Element
  */
-class List extends Element {
+window.List = class List extends Element {
 
     /**
      * Create an instance of List
@@ -33,4 +33,4 @@ class List extends Element {
 
         return this.element;
     }
-}
+};

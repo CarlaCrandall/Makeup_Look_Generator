@@ -1,7 +1,7 @@
 /**
  * Instructions Class - Inherits from Element
  */
-class Instructions extends Element {
+window.Instructions = class Instructions extends Element {
 
     /**
      * Create an instance of Instructions
@@ -36,4 +36,4 @@ class Instructions extends Element {
 
         return this.element;
     }
-}
+};

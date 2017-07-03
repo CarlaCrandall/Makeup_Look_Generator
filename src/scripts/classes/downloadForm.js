@@ -1,7 +1,7 @@
 /**
  * Download Form Class - Inherits from Element
  */
-class DownloadForm extends Element {
+window.DownloadForm = class DownloadForm extends Element {
 
     /**
      * Create an instance of Download Form
@@ -56,4 +56,4 @@ class DownloadForm extends Element {
 
         return this.element;
     }
-}
+};

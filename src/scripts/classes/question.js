@@ -1,7 +1,7 @@
 /**
  * Question Class - Inherits from Element
  */
-class Question extends Element {
+window.Question = class Question extends Element {
 
     /**
      * Create an instance of Question
@@ -79,16 +79,17 @@ class Question extends Element {
 
         switch (value) {
             case 'reset':
-                translate = 'translateX( 0 )';
+                translate = 'translateX(0)';
                 break;
 
             case 'left':
-                translate = 'translateX( calc( -100% - 15px ) )';
+                translate = 'translateX(calc(-100% - 15px))';
                 break;
 
             case 'right':
-                translate = 'translateX( calc( 100% + 15px ) )';
+                translate = 'translateX(calc(100% + 15px))';
                 break;
+
             default:
                 break;
         }
@@ -103,4 +104,4 @@ class Question extends Element {
     setClass(value) {
         this.element.setAttribute('class', `question ${value}`);
     }
-}
+};
