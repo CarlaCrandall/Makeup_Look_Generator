@@ -1,5 +1,5 @@
 require('../element');
-require('../downloadForm');
+require('../download-form');
 
 describe('DownloadForm', () => {
     let images;

@@ -24,7 +24,7 @@ module.exports = function(grunt) {
                     './src/scripts/classes/list.js',
                     './src/scripts/classes/question.js',
                     './src/scripts/classes/instructions.js',
-                    './src/scripts/classes/downloadForm.js',
+                    './src/scripts/classes/download-form.js',
                     './src/scripts/classes/button.js',
                     './src/scripts/app.js'
                 ],
