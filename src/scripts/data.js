@@ -1,7 +1,7 @@
 /**
 * Used to generate questions, images, and instructions
 */
-const questionData = [{
+const data = [{
     questionLabel: 'lid color',
     choices: ['peach', 'mint', 'sunbeam', 'mauve'],
     instruction: 'Sweep [OPTION] eyeshadow onto your eyelid.'

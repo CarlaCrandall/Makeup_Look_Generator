@@ -24,9 +24,8 @@
     "clearMocks": true,
     "resetMocks": true,
     "collectCoverageFrom": [
-      "src/**/*.{js}",
-      "!**/node_modules/**",
-      "!src/scripts/data.js"
+      "src/scripts/classes/*.{js}",
+      "!**/node_modules/**"
     ],
     "setupTestFrameworkScriptFile": "./jest/setup.js"
   }

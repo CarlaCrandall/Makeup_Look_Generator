@@ -26,6 +26,7 @@ module.exports = function(grunt) {
                     './src/scripts/classes/instructions.js',
                     './src/scripts/classes/download-form.js',
                     './src/scripts/classes/button.js',
+                    './src/scripts/classes/makeup-generator.js',
                     './src/scripts/app.js'
                 ],
                 dest: './build/scripts/app.js'
