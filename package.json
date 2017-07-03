@@ -25,7 +25,8 @@
     "resetMocks": true,
     "collectCoverageFrom": [
       "src/**/*.{js}",
-      "!**/node_modules/**"
+      "!**/node_modules/**",
+      "!src/scripts/data.js"
     ],
     "setupTestFrameworkScriptFile": "./jest/setup.js"
   }
