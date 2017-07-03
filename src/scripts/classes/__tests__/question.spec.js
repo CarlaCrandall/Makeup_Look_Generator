@@ -1,5 +1,5 @@
 require('../element');
-require('../../../../jest/mockSelect');
+require('../../../../jest/mocks/mockSelect');
 require('../question');
 
 describe('Question', () => {

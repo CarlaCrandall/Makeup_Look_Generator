@@ -1,5 +1,5 @@
 require('../element');
-require('../../../../jest/mockList');
+require('../../../../jest/mocks/mockList');
 require('../instructions');
 
 describe('Instructions', () => {
