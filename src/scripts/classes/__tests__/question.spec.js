@@ -15,6 +15,10 @@ describe('Question', () => {
         onSelection = jest.fn();
     });
 
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('constructor() creates an object with passed in values', () => {
         const instance = new Question(questionData, onSelection);
 

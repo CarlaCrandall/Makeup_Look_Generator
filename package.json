@@ -21,8 +21,6 @@
     "test-coverage": "jest --coverage"
   },
   "jest": {
-    "clearMocks": true,
-    "resetMocks": true,
     "collectCoverageFrom": [
       "src/scripts/classes/*.{js}",
       "!**/node_modules/**"
