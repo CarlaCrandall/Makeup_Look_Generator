@@ -19,7 +19,7 @@ window.MakeupGenerator = class MakeupGenerator {
             imgHolder: document.getElementById('imgHolder'),
             instructionsHolder: document.getElementById('instructionsHolder'),
             formHolder: document.getElementById('formHolder'),
-            navHolder: document.getElementById('questionNav')
+            navHolder: document.getElementById('navHolder')
         };
     }
 

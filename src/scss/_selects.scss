@@ -3,10 +3,10 @@
 -----------------------------------------*/
 #questionHolder {
 	min-height: 380px;
-	margin-top: 20px; 
+	margin-top: 20px;
 }
 
-#questionNav { display: none; }
+#navHolder { display: none; }
 
 .question {
 	opacity: 0;
@@ -37,7 +37,7 @@ label {
     	pointer-events: none;
     	height: calc(100% - 4px);
 
-    	@include transition( color ); // Hover Transition  
+    	@include transition( color ); // Hover Transition
     }
 
 	span {
@@ -74,9 +74,9 @@ select {
 	-webkit-transition: border-color .25s ease-in-out, color .25s ease-in-out;
 	transition: border-color .25s ease-in-out, color .25s ease-in-out;
 
-	&:focus, &:hover { 
+	&:focus, &:hover {
 		cursor: pointer;
-		border-color: $teal; 
+		border-color: $teal;
 		color: $text;
 	}
 }
@@ -92,12 +92,12 @@ select {
 		float: none;
 		line-height: 40px;
 
-		&:after { 
+		&:after {
 			top: 42px;
 			height: 41px;
-			line-height: 40px; 
+			line-height: 40px;
 		}
-	
+
 		span { width: 100%; }
 	}
 
@@ -111,16 +111,16 @@ select {
 
 // Mobile
 @media( max-width: 767px ) {
-	
-	#questionHolder { 
+
+	#questionHolder {
 		min-height: 105px;
 		margin-top: 0;
-		padding: 0 15px; 
+		padding: 0 15px;
 		position: relative;
 		overflow: hidden;
 	}
 
-	#questionNav { 
+	#navHolder {
 		display: inline-block;
 		float: right;
 		margin-right: 15px;
@@ -129,10 +129,10 @@ select {
 		.button:first-of-type { margin-left: 0; }
 	}
 
-	label { 
+	label {
 		position: absolute;
 		margin-bottom: 0;
 
-		@include transition( transform ); // Slide Transition 
+		@include transition( transform ); // Slide Transition
 	}
 }
